@@ -1,6 +1,12 @@
 # Climate School Exercises
 
 
+**Note: This repository is still under construction. It will be populated until the start of the lecture.**
+
+**(Check back and pull updates if you are curious)**
+
+------
+
 
 ## Importing in Eclipse from GitHub
 

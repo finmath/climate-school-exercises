@@ -1,6 +1,8 @@
 # Climate School Exercises
 
 
+## Work in Progress
+
 **Note: This repository is still under construction. It will be populated until the start of the lecture.**
 
 **(Check back and pull updates if you are curious)**

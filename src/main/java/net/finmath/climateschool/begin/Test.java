@@ -6,10 +6,8 @@ package net.finmath.climateschool.begin;
 public class Test {
 
 	public static void main(String[] args) {
-		
-		System.out.println();
-		System.out.println("\tLooks as if it works!");
-		System.out.println();
+
+		System.out.println("\n\tLooks as if it works!");
 
 	}
 

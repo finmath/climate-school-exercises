@@ -31,6 +31,12 @@
 			<groupId>net.finmath</groupId>
 			<artifactId>finmath-lib-plot-extensions</artifactId>
 			<version>${finmath-plot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>net.finmath</groupId>
+					<artifactId>finmath-lib</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

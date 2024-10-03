@@ -60,9 +60,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${compiler-plugin.version}</version>
 				<configuration>
-					<source>17</source>
-					<target>17</target>
-					<compilerVersion>17</compilerVersion>
+					<source>21</source>
+					<target>21</target>
+					<compilerVersion>21</compilerVersion>
 				</configuration>
 			</plugin>
 			<plugin>

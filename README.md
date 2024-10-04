@@ -35,4 +35,20 @@ the local git folder as Maven Project;
 
 ## Testing your Setup
 
-- Run the Java Class “Test.java” in the Package “net.finmath.climateschool.begin” (in the Eclipse Project Explorer: right-click on the class, the select “Run As → Java Application").
+To test your setup, run the Java Class `Test.java` in the package `net.finmath.climateschool.begin`. To do so: In the Eclipse Project Explorer:
+
+- Expand `src/main/java'
+- Expand `net.finmath.climateschool.begin`
+- Right-click on the class `Test.java`,
+- then select “Run As → Java Application".
+  
+## Update the Project (later)
+
+To get an update of this project at a later time
+
+- Right click on the project,
+- then select “Team → Pull".
+ 
+ This will *pull* updates committed to the project.
+ 
+Note: If you modified files in the project, you may see "merge conflicts". At the current stage it is recommended that you do not modify existing files. You may add new ones.

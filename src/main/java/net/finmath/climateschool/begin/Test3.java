@@ -17,6 +17,8 @@ public class Test3 {
 
 	public static void main(String[] args) throws Exception {
 
+		System.out.println("\n\tThis test should show two plots of the density of samples of a normal distribution.");
+		
 		long numberOfSamples = 1000000;
 		plotNormalSamples(numberOfSamples, 0.0 /* mean */, 0.1 /* standard deviation */);
 		plotNormalSamples(numberOfSamples, 0.0 /* mean */, 1.0 /* standard deviation */);

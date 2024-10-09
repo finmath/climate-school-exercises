@@ -1,5 +1,5 @@
 /**
- * Experiment on the DICE model
+ * Experiments on the DICE model
  * 
  * @author Christian Fries
  */

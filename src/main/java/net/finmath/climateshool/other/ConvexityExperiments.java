@@ -2,7 +2,6 @@ package net.finmath.climateshool.other;
 
 import java.util.List;
 import java.util.Random;
-import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
 public class ConvexityExperiments {

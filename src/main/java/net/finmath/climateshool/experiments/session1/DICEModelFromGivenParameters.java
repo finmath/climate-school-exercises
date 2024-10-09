@@ -1,11 +1,6 @@
 package net.finmath.climateshool.experiments.session1;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import net.finmath.climate.models.CarbonConcentration;

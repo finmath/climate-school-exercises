@@ -1,4 +1,4 @@
-package net.finmath.climate.models.utils;
+package net.finmath.climateschool.utilities;
 
 import net.finmath.stochastic.RandomOperator;
 import net.finmath.stochastic.RandomVariable;

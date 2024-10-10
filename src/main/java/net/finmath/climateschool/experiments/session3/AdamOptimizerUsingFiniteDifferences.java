@@ -3,7 +3,7 @@ package net.finmath.climateschool.experiments.session3;
 
 import java.util.Arrays;
 
-import net.finmath.climate.models.utils.RandomOperators;
+import net.finmath.climateschool.utilities.RandomOperators;
 import net.finmath.montecarlo.RandomVariableFactory;
 import net.finmath.montecarlo.RandomVariableFromArrayFactory;
 import net.finmath.montecarlo.automaticdifferentiation.RandomVariableDifferentiable;

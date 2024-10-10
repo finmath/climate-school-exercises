@@ -125,7 +125,7 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 					if (k % 100 == 0) {
 						System.out.printf("iteration %8d \t\t value %8.4f %n", k, -valueForPrinting);
 					} else {
-//						System.out.printf("iteration %8d \t\t value %8.4f \r", k, -valueForPrinting);
+						//						System.out.printf("iteration %8d \t\t value %8.4f \r", k, -valueForPrinting);
 					}
 				}
 			}
@@ -162,12 +162,8 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 							((RandomVariableDifferentiable) parameters[i].sub(stepDirection.mult(learningRate[i]))).getCloneIndependent();
 				}
 
-				if (k % 10 == 0) {
-					if (k % 100 == 0) {
-						System.out.printf("iteration %8.4f \t\t value %8.4f %n", (double) k,value.getAverage());
-					} else {
-//						System.out.printf("iteration %8.4f \t\t value %8.4f \r", (double) k,value.getAverage());
-					}
+				if (k % 100 == 0) {
+					System.out.printf("iteration %8.4f \t\t value %8.4f %n", (double) k,value.getAverage());
 				}
 			}
 		}

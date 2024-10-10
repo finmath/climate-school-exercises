@@ -56,8 +56,8 @@ public class DICEModelSocialCostOfCarbon {
 	private static double getSocialCostOfCarbonForGivenDiscountRate(double discountRate) {
 		final UnaryOperator<Double> abatementFunction = time -> Math.min(abatementInitial + (abatementMax-abatementInitial)/abatementMaxTime * time, abatementMax);
 
-		final int numberOfTimes = (int)Math.round(timeHorizon / timeStep);
-		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimes, timeStep);
+		final int numberOfTimeSteps = (int)Math.round(timeHorizon / timeStep);
+		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimeSteps, timeStep);
 
 		// The value of the unshifted model
 		final ClimateModel climateModel = new DICEModel(timeDiscretization, abatementFunction, t -> 0.26, discountRate);

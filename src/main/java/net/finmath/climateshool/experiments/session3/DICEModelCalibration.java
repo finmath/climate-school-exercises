@@ -36,8 +36,8 @@ public class DICEModelCalibration {
 		/*
 		 * Create a time discretization
 		 */
-		final int numberOfTimes = (int)Math.round(timeHorizon / timeStep);
-		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimes, timeStep);
+		final int numberOfTimeSteps = (int)Math.round(timeHorizon / timeStep);
+		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimeSteps, timeStep);
 
 		/*
 		 * Create our savings rate model: a constant

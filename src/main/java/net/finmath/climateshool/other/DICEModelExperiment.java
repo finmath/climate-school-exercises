@@ -44,12 +44,12 @@ public class DICEModelExperiment {
 		for(double abatementMaxTime : abatementMaxTimeScenarios) {
 			final UnaryOperator<Double> abatementFunction = time -> Math.min(abatementInitial + (abatementMax-abatementInitial)/abatementMaxTime * time, abatementMax);
 
-			final int numberOfTimes = (int)Math.round(timeHorizon / timeStep);
-			final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimes, timeStep);
+			final int numberOfTimeSteps = (int)Math.round(timeHorizon / timeStep);
+			final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimeSteps, timeStep);
 			final ClimateModel climateModel = new DICEModel(timeDiscretization, abatementFunction, t -> 0.26, discountRate);
 
 			System.out.println("Abatement 100% at time + " + abatementMaxTime);
-			System.out.println(String.format("\t %8.4f \t %8.4f \t %8.4f \t %8.4f", abatementMaxTime, climateModel.getTemperature()[numberOfTimes-1].getExpectedTemperatureOfAtmosphere(), climateModel.getEmission()[numberOfTimes-1].getAverage(), climateModel.getValue().getAverage()));
+			System.out.println(String.format("\t %8.4f \t %8.4f \t %8.4f \t %8.4f", abatementMaxTime, climateModel.getTemperature()[numberOfTimeSteps-1].getExpectedTemperatureOfAtmosphere(), climateModel.getEmission()[numberOfTimeSteps-1].getAverage(), climateModel.getValue().getAverage()));
 
 
 			Plots

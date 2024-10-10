@@ -1,4 +1,4 @@
-package net.finmath.climateshool.experiments.session5;
+package net.finmath.climateshool.experiments.session6;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

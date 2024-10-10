@@ -2,17 +2,13 @@ package net.finmath.climateshool.experiments.session2;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-import net.finmath.climate.models.CarbonConcentration;
 import net.finmath.climate.models.ClimateModel;
-import net.finmath.climate.models.Temperature;
 import net.finmath.climate.models.dice.DICEModel;
 import net.finmath.optimizer.GoldenSectionSearch;
 import net.finmath.plots.Plots;
-import net.finmath.stochastic.RandomVariable;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
 
@@ -41,7 +37,7 @@ public class DICEModelOneParametricDependencyOnInterestRate {
 		Plots
 		.createScatter(discountRates, timeToReachMaxAbatement, 0, 300, 3)
 		.setTitle("Time to Reach Maximium Abatement (T(\u03BC=1) in the One Parametric Model")
-		.setXAxisLabel("rate (r)").setXAxisNumberFormat(new DecimalFormat("0.0%")).setYAxisLabel("T(\\u03BC=1)").show();
+		.setXAxisLabel("rate (r)").setXAxisNumberFormat(new DecimalFormat("0.0%")).setYAxisLabel("T(\u03BC=1)").show();
 
 		System.out.println("_".repeat(79));
 	}

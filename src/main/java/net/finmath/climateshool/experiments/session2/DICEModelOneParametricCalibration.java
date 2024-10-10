@@ -16,6 +16,8 @@ import net.finmath.time.TimeDiscretizationFromArray;
 /*
  * Experiment related to the DICE model.
  * 
+ * Suggestion: Change the discount rate to smaller values: 0.02, 0.01, ...
+ * 
  * Note: The code makes some small simplification: it uses a constant savings rate and a constant external forcings.
  * It may still be useful for illustration.
  */

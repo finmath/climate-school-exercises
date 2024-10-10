@@ -3,12 +3,19 @@
 
 ## Work in Progress
 
-**Note: This repository is still under construction. It will be populated until the start of the lecture.**
-
-**(Check back and pull updates if you are curious)**
+**Note: This repository maight get updates from time to time. Check back and pull updates if you are curious.**
 
 ------
 
+## Numerical Experiments
+
+There are currently six different numerical experiments in the package `net.finmath.climateschool.experiments`.
+
+Feel free play with them. Alter parameters and check results.
+
+Note: We use models from *finmath lib*. This code is open source and available at https://github.com/finmath/finmath-lib
+
+------
 
 ## Importing in Eclipse from GitHub
 

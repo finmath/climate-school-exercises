@@ -3,4 +3,4 @@
  * 
  * @author Christian Fries
  */
-package net.finmath.climateshool.experiments;
+package net.finmath.climateschool.experiments;

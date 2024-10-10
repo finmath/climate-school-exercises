@@ -1,13 +1,6 @@
 package net.finmath.climateshool.experiments.session6;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
@@ -15,12 +8,8 @@ import net.finmath.climate.models.utils.RandomOperators;
 import net.finmath.climateschool.utilities.ModelFactory;
 import net.finmath.montecarlo.interestrate.TermStructureMonteCarloSimulationModel;
 import net.finmath.plots.DoubleToRandomVariableFunction;
-import net.finmath.plots.GraphStyle;
 import net.finmath.plots.Plot;
-import net.finmath.plots.Plot2D;
 import net.finmath.plots.PlotProcess2D;
-import net.finmath.plots.PlotablePoints2D;
-import net.finmath.plots.Point2D;
 import net.finmath.stochastic.RandomOperator;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
@@ -33,8 +22,6 @@ import net.finmath.time.TimeDiscretizationFromArray;
  * @author Christian Fries
  */
 public class StochasticRatesExperiment {
-
-	private static boolean savePlot = true;
 
 	public static void main(String[] args) throws Exception {
 

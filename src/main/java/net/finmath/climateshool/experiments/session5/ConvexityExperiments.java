@@ -18,9 +18,6 @@ public class ConvexityExperiments {
 		double mean = getMean(randomNumbers);
 
 		double variance = getVariance(randomNumbers);
-
-		double standardDeviation = Math.sqrt(variance);
-		
 		
 		System.out.println("mean of the samples X.... = " + mean);
 		System.out.println("variance of the samples X = " + variance);

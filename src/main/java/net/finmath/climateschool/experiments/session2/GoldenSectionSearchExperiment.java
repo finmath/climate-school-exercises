@@ -1,4 +1,4 @@
-package net.finmath.climateshool.experiments.session2;
+package net.finmath.climateschool.experiments.session2;
 
 import java.util.function.DoubleUnaryOperator;
 

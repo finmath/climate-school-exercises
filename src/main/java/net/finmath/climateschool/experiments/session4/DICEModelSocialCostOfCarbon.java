@@ -1,4 +1,4 @@
-package net.finmath.climateshool.experiments.session4;
+package net.finmath.climateschool.experiments.session4;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

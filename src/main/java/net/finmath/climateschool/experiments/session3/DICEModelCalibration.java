@@ -1,4 +1,4 @@
-package net.finmath.climateshool.experiments.session3;
+package net.finmath.climateschool.experiments.session3;
 
 import java.util.Arrays;
 import java.util.function.UnaryOperator;
@@ -7,7 +7,7 @@ import net.finmath.climate.models.CarbonConcentration;
 import net.finmath.climate.models.ClimateModel;
 import net.finmath.climate.models.Temperature;
 import net.finmath.climate.models.dice.DICEModel;
-import net.finmath.climateshool.experiments.session3.AdamOptimizerUsingFiniteDifferences.GradientMethod;
+import net.finmath.climateschool.experiments.session3.AdamOptimizerUsingFiniteDifferences.GradientMethod;
 import net.finmath.plots.Plot2D;
 import net.finmath.plots.Plots;
 import net.finmath.stochastic.RandomVariable;

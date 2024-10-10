@@ -1,4 +1,4 @@
-package net.finmath.climateshool.experiments.session3;
+package net.finmath.climateschool.experiments.session3;
 
 
 import java.util.Arrays;

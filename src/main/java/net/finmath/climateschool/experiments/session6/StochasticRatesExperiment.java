@@ -1,4 +1,4 @@
-package net.finmath.climateshool.experiments.session6;
+package net.finmath.climateschool.experiments.session6;
 
 import java.text.DecimalFormat;
 import java.util.function.DoubleUnaryOperator;

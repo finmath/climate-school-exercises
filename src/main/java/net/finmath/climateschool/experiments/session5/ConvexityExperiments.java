@@ -1,4 +1,4 @@
-package net.finmath.climateshool.experiments.session5;
+package net.finmath.climateschool.experiments.session5;
 
 import java.util.List;
 import java.util.Random;

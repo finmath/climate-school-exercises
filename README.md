@@ -1,15 +1,25 @@
 # Climate School Exercises
 
 
-## Work in Progress
+------
 
-**Note: This repository maight get updates from time to time. Check back and pull updates if you are curious.**
+## About this Repository
+
+This repository contains some elementary experiments related to the DICE model, stochastic interest rates models and combinations thereof.
+
+The experiments are associated with a session at the *Munich Climate School* on *Climate Models and Interest Rate Risk*.
+
+**Note:** The repository may get some updates/improvements after the climate school.
+
+## Presentation
+
+The presentation slides can be found in the folder *presentation*.
 
 ------
 
 ## Numerical Experiments
 
-There are currently six different numerical experiments in the package `net.finmath.climateschool.experiments`.
+There are currently seven different numerical experiments in the package `net.finmath.climateschool.experiments`.
 
 Feel free play with them. Alter parameters and check results.
 

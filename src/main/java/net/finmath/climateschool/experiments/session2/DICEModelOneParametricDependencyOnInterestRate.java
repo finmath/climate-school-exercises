@@ -27,11 +27,11 @@ public class DICEModelOneParametricDependencyOnInterestRate {
 		List<Double> timeToReachMaxAbatement = new ArrayList<>();
 		for(double discountRate = 0.001; discountRate <= 0.04; discountRate += 0.001) {
 
-			double scc = getTimeToReachMaxAbatement(discountRate);
+			double maxAbatementTime = getTimeToReachMaxAbatement(discountRate);
 			
 			discountRates.add(discountRate);
-			timeToReachMaxAbatement.add(scc);
-			System.out.println(String.format("\t %8.4f \t %8.4f", discountRate, scc));
+			timeToReachMaxAbatement.add(maxAbatementTime);
+			System.out.println(String.format("\t %8.4f \t %8.4f", discountRate, maxAbatementTime));
 		}
 
 		Plots

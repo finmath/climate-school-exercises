@@ -13,13 +13,14 @@ import net.finmath.stochastic.RandomVariable;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
 
-/*
+/**
  * Experiment related to the DICE model.
+ * 
+ * Creates a DICE model with fixed parameters and plots some of the model quantities.
  * 
  * Suggestion: Change the discount rate to smaller values: 0.02, 0.01, ...
  * 
- * Note: The code makes some small simplification: it uses a constant savings rate and a constant external forcings.
- * It may still be useful for illustration.
+ * @author Christian Fries
  */
 public class DICEModelOneParametricCalibration {
 

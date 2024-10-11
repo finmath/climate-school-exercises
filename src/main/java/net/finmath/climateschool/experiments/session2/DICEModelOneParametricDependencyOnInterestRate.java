@@ -12,9 +12,10 @@ import net.finmath.plots.Plots;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
 
-/*
+/**
  * Experiment related to the DICE model: How does the time to reach maximum abatement depend on the interest rate.
  * 
+ * @author Christian Fries
  */
 public class DICEModelOneParametricDependencyOnInterestRate {
 

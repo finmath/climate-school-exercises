@@ -12,11 +12,14 @@ import net.finmath.stochastic.RandomVariable;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
 
-/*
+/**
  * Experiment related to the DICE model.
  * 
- * Note: The code makes some small simplification: it uses a constant savings rate and a constant external forcings.
- * It may still be useful for illustration.
+ * Creates a DICE model with fixed parameters and plots some of the model quantities.
+ * 
+ * Suggestion: Explore different interest rates (discountRate).
+ * 
+ * @author Christian Fries
  */
 public class DICEModelFromGivenParameters {
 

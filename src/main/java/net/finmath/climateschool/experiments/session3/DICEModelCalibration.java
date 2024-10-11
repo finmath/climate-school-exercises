@@ -7,7 +7,8 @@ import net.finmath.climate.models.CarbonConcentration;
 import net.finmath.climate.models.ClimateModel;
 import net.finmath.climate.models.Temperature;
 import net.finmath.climate.models.dice.DICEModel;
-import net.finmath.climateschool.experiments.session3.AdamOptimizerUsingFiniteDifferences.GradientMethod;
+import net.finmath.climateschool.utilities.AdamOptimizerUsingFiniteDifferences;
+import net.finmath.climateschool.utilities.AdamOptimizerUsingFiniteDifferences.GradientMethod;
 import net.finmath.plots.Plot2D;
 import net.finmath.plots.Plots;
 import net.finmath.stochastic.RandomVariable;
@@ -15,11 +16,17 @@ import net.finmath.stochastic.Scalar;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
 
-/*
+/**
  * Experiment related to the DICE model.
  * 
- * Note: The code makes some small simplification: it uses a constant savings rate and a constant external forcings.
- * It may still be useful for illustration.
+ * Calibrates a full abatement pice-wise constant abatement function. With 500 time steps the model has 500 free parameters.
+ * The abatement function will be plotted during the calibration, such that you can observe how the optimizer is approaching the optimal
+ * abatement paths.
+ * 
+ * Observation: The optimizer first improves the "early years" and does not care about the far future. This is due to the
+ * value function being less sensitive to the far future.
+ * 
+ * Suggestion: Change the discount rate and observe that with lower discount rate the calibration takes a larger focus on later years.
  */
 public class DICEModelCalibration {
 

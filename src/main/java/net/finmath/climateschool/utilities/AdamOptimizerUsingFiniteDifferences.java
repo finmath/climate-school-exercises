@@ -1,9 +1,8 @@
-package net.finmath.climateschool.experiments.session3;
+package net.finmath.climateschool.utilities;
 
 
 import java.util.Arrays;
 
-import net.finmath.climateschool.utilities.RandomOperators;
 import net.finmath.montecarlo.RandomVariableFactory;
 import net.finmath.montecarlo.RandomVariableFromArrayFactory;
 import net.finmath.montecarlo.automaticdifferentiation.RandomVariableDifferentiable;

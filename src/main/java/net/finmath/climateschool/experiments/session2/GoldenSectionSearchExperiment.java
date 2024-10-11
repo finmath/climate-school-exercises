@@ -7,7 +7,7 @@ import net.finmath.optimizer.GoldenSectionSearch;
 /**
  * Small demonstration of how to use the GoldenSectionSearch minimizer.
  * 
- * @author Chrisitan Fries
+ * @author Christian Fries
  */
 public class GoldenSectionSearchExperiment {
 

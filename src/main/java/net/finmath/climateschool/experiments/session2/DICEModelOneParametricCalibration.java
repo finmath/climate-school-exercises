@@ -16,7 +16,9 @@ import net.finmath.time.TimeDiscretizationFromArray;
 /**
  * Experiment related to the DICE model.
  * 
- * Creates a DICE model with fixed parameters and plots some of the model quantities.
+ * Calibrates a one parametric abatement function for a model with given values of the discount rate.
+ * 
+ * Plots the optimal abatement function.
  * 
  * Suggestion: Change the discount rate to smaller values: 0.02, 0.01, ...
  * 
@@ -51,7 +53,12 @@ public class DICEModelOneParametricCalibration {
 		 */
 		final UnaryOperator<Double> savingsRateFunction = time -> 0.26;
 
-		GoldenSectionSearch optimizer = new GoldenSectionSearch(10.0, 300.0);
+		/*
+		 * Search for the optimal value of abatementMaxTime
+		 */
+		double searchIntervallLowerBound = 10.0;
+		double searchIntervallUpperBound = 300.0;		
+		GoldenSectionSearch optimizer = new GoldenSectionSearch(searchIntervallLowerBound, searchIntervallUpperBound);
 		while(optimizer.getAccuracy() > 1E-11 && !optimizer.isDone()) {
 
 			final double abatementMaxTime = optimizer.getNextPoint();	// Free parameter
@@ -70,6 +77,7 @@ public class DICEModelOneParametricCalibration {
 
 			System.out.println(String.format("Time: %5.2f \t Value: %10.3f", abatementMaxTime, value));
 			
+			// Note: The GoldenSectionSearch optimizer is a minimizer. But we like to maximize the value. Hence we pass -value to the optimzer.
 			optimizer.setValue(-value);
 		}
 		

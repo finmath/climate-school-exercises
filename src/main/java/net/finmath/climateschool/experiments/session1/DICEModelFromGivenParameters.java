@@ -17,7 +17,7 @@ import net.finmath.time.TimeDiscretizationFromArray;
  * 
  * Creates a DICE model with fixed parameters and plots some of the model quantities.
  * 
- * Suggestion: Explore different interest rates (discountRate).
+ * Suggestion: Explore different values of the abatementMaxTime and observe the carbon in atmosphere.
  * 
  * @author Christian Fries
  */

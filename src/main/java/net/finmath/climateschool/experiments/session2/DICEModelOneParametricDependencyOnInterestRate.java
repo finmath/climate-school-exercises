@@ -15,6 +15,8 @@ import net.finmath.time.TimeDiscretizationFromArray;
 /**
  * Experiment related to the DICE model: How does the time to reach maximum abatement depend on the interest rate.
  * 
+ * We calibrate the optimal time to reach 100 % abatement for different values of the discount rate.
+ * 
  * @author Christian Fries
  */
 public class DICEModelOneParametricDependencyOnInterestRate {

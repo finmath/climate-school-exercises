@@ -13,7 +13,7 @@ The experiments are associated with a session at the *Munich Climate School* on 
 
 ## Presentation
 
-The presentation slides can be found in the folder *presentation*.
+The [presentation slides](/presentation/Presentation 2024 Climate School - DICE - Intergenerational Equity DICE Nonlinear Discounting - Fries) can be found in the folder *presentation*.
 
 ------
 

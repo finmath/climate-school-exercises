@@ -13,7 +13,9 @@ The experiments are associated with a session at the *Munich Climate School* on 
 
 ## Presentation
 
-The presentation can be found in the folder *presentation*.
+The presentation is [available via SSRN](https://ssrn.com/abstract=4986415):
+
+Fries, Christian P., *Climate Models and Interest Rate Risk: How interest rate risk affects inter-generational equity in climate models* (October 10, 2024). https://ssrn.com/abstract=4986415
 
 ------
 

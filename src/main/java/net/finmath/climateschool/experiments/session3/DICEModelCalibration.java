@@ -38,7 +38,7 @@ public class DICEModelCalibration {
 		/*
 		 * Discount rate
 		 */
-		final double discountRate = 0.03;
+		final double discountRate = 0.015;
 
 		/*
 		 * Create a time discretization
@@ -54,25 +54,26 @@ public class DICEModelCalibration {
 
 		// Initial parameters for our abatement function
 		final double[] initialParameters = new double[timeDiscretization.getNumberOfTimes()];
-		Arrays.fill(initialParameters, 0.03);
+		Arrays.fill(initialParameters, -Math.log(-Math.log(0.8)));
 
 		// Create a plot of the abatement function (will be updated during iterations)
 		Plot2D plot = Plots
 				.createScatter(timeDiscretization.getAsDoubleArray(), timeDiscretization.getAsDoubleArray(), 0, 300, 3)
-				.setTitle("Abatement (r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc");
+				.setTitle("Abatement (r = " + String.format("%.2f%%", discountRate*100) + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc");
 		plot.show();
 
-		final AdamOptimizerUsingFiniteDifferences optimizer = new AdamOptimizerUsingFiniteDifferences(initialParameters, 800, 0.1, GradientMethod.AVERAGE) {
+		final AdamOptimizerUsingFiniteDifferences optimizer = new AdamOptimizerUsingFiniteDifferences(initialParameters, 800, 0.1, GradientMethod.COMPLETE) {
 			private int i = 0;
 			@Override
 			public RandomVariable setValue(RandomVariable[] parameters) {
 
 				double[] abatementParameter = Arrays.stream(parameters).mapToDouble(RandomVariable::getAverage).map(x -> Math.exp(-Math.exp(-x))).toArray();
+				abatementParameter[0] = 0.03;
 
 				/*
 				 * Create our abatement model
 				 */
-				final UnaryOperator<Double> abatementFunction = time -> abatementParameter[(int)Math.round(time)];
+				final UnaryOperator<Double> abatementFunction = time -> abatementParameter[(int)Math.round(time/timeStep)];
 
 				/*
 				 * Create the DICE model
@@ -97,11 +98,13 @@ public class DICEModelCalibration {
 
 		// Get optimal value
 		final RandomVariable[] bestParameters = optimizer.getBestFitParameters();
+		double[] abatementParameter = Arrays.stream(bestParameters).mapToDouble(RandomVariable::getAverage).map(x -> Math.exp(-Math.exp(-x))).toArray();
+		abatementParameter[0] = 0.03;
 
 		/*
 		 * Create our abatement model
 		 */
-		final UnaryOperator<Double> abatementFunction = time -> bestParameters[(int)Math.round(time)].getAverage();
+		final UnaryOperator<Double> abatementFunction = time -> abatementParameter[(int)Math.round(time/timeStep)];
 
 		/*
 		 * Create the DICE model
@@ -131,6 +134,6 @@ public class DICEModelCalibration {
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getAbatement()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-		.setTitle("Abatement (scenario =" + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc").show();
+		.setTitle("Abatement t ⟼ 𝜇(t) (r = " + String.format("%.0f%%", discountRate*100) + ")").setXAxisLabel("time t (years)").setYAxisLabel("Abatement 𝜇").show();
 	}
 }

@@ -92,7 +92,7 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 
 			for(int k=0; k<iterations; k++) {
 				final RandomVariable value = setValue(parameters);
-				if (value.getAverage() < bestValue) {
+				if (value.getAverage() < bestValue || bestFitParameters == null) {
 					bestValue = value.getAverage();
 					bestFitParameters=parameters.clone();
 				}
@@ -140,9 +140,14 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 
 			for(int k=0; k<iterations; k++) {
 				final RandomVariable value = setValue(parameters);
+				if (value.getAverage() < bestValue || bestFitParameters == null) {
+					bestValue = value.getAverage();
+					bestFitParameters=parameters.clone();
+				}
+				
 				final RandomVariable[] derivative = getGradient(parameters, value);
-
 				for(int i=0; i< parameters.length; i++) {
+
 					RandomVariable gradient;
 					try {
 						gradient = derivative[i];

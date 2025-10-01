@@ -1,7 +1,10 @@
 # Climate School Exercises
 
 
+** Note: The material in this repository will be updated during the next days. Please check back.**
+
 ------
+
 
 ## About this Repository
 
@@ -13,9 +16,7 @@ The experiments are associated with a session at the *Munich Climate School* on 
 
 ## Presentation
 
-The presentation is [available via SSRN](https://ssrn.com/abstract=4986415):
-
-Fries, Christian P., *Climate Models and Interest Rate Risk: How interest rate risk affects inter-generational equity in climate models* (October 10, 2024). https://ssrn.com/abstract=4986415
+*Updated presentation slides will be available though this page soon*
 
 ------
 

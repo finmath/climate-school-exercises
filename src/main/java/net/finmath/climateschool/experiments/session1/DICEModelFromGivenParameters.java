@@ -29,12 +29,16 @@ public class DICEModelFromGivenParameters {
 	public static void main(String[] args) {
 
 		/*
+		 * We set some model parameters,
+		 */
+		
+		/*
 		 * Discount rate
 		 */
 		final double discountRate = 0.03;
 
 		/*
-		 * Parameters for the abatement model
+		 * Parameters for the abatement model (abatement = fraction of industrial CO2 reduction; 1.00 ~ 100 % reduction ~ carbon neutral).
 		 */
 		final double abatementInitial = 0.03;
 		final double abatementMax = 1.00;
@@ -47,23 +51,23 @@ public class DICEModelFromGivenParameters {
 		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimeSteps, timeStep);
 
 		/*
-		 * Create our abatement model
+		 * Create our abatement model: it is a piecewise linear funtion: starting in abatementInitial, then reaching abatementMax in abatementMaxTime years, then staying at abatementMax.
 		 */
 		final UnaryOperator<Double> abatementFunction = time -> Math.min(abatementInitial + (abatementMax-abatementInitial)/abatementMaxTime * time, abatementMax);
 
 		/*
-		 * Create our savings rate model: a constant
+		 * Create our savings rate model: a constant.
 		 */
 		final UnaryOperator<Double> savingsRateFunction = time -> 0.26;
 
 		/*
-		 * Create the DICE model
+		 * Create the DICE model from the given parameters.
 		 */
 		final ClimateModel climateModel = new DICEModel(timeDiscretization, abatementFunction, savingsRateFunction, discountRate);
 
 
 		/*
-		 * Plot
+		 * Plots
 		 */
 	
 		Plots

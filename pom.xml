@@ -5,7 +5,7 @@
 
 	<groupId>net.finmath</groupId>
 	<artifactId>climate-school-exercises</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<name>Climate School Exercises</name>
 
 	<properties>
@@ -147,7 +147,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- NEU: Dependencies für jpackage in target/ bereitstellen -->
+			<!-- Dependencies für jpackage in target/ bereitstellen -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -167,11 +167,23 @@
 				</executions>
 			</plugin>
 
-			<!-- NEU: jpackage – erzeugt OS-spezifische Installer -->
+			<!-- jpackage -->
 			<plugin>
 				<groupId>org.panteleyev</groupId>
 				<artifactId>jpackage-maven-plugin</artifactId>
 				<version>1.7.1</version>
+				<!-- top level config (if called via mvn jpackage:jpackage -->
+				<configuration>
+					<name>${project.name}</name>
+					<appVersion>${project.version}</appVersion>
+					<input>${project.build.directory}</input>
+					<mainJar>${project.build.finalName}.jar</mainJar>
+					<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
+					<runtimeImage>${java.home}</runtimeImage>
+					<destination>${project.build.directory}/dist</destination>
+					<removeDestination>true</removeDestination>
+					<type>${pack.type}</type>
+				</configuration>
 				<executions>
 					<execution>
 						<id>make-installer</id>
@@ -185,14 +197,26 @@
 							<input>${project.build.directory}</input>
 							<mainJar>${project.build.finalName}.jar</mainJar>
 							<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
-							<!-- Bundle current JRE; later replace by jlink-Image -->
 							<runtimeImage>${java.home}</runtimeImage>
-							<destination>${project.basedir}/target/dist</destination>
+							<destination>${project.build.directory}/dist</destination>
 							<removeDestination>true</removeDestination>
 							<type>${pack.type}</type>
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<!-- Maven Release Plugin: create v<version>; Tag-Push triggers GitHub Action -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<pushChanges>true</pushChanges>
+					<arguments>-DskipTests</arguments>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -256,11 +280,17 @@
 		</profile>
 	</profiles>
 
+	<scm>
+		<connection>scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
+		<developerConnection>scm:git:git@github.com:OWNER/REPO.git</developerConnection>
+		<url>https://github.com/finmath/climate-school-exercises</url>
+		<tag>HEAD</tag>
+	</scm>
+
 	<repositories>
 		<repository>
 			<id>lecture-maven-repo</id>
-			<url>
-				https://raw.githubusercontent.com/qntlb/numerical-methods-lecture/master/local-maven-repo</url>
+			<url>https://raw.githubusercontent.com/qntlb/numerical-methods-lecture/master/local-maven-repo</url>
 		</repository>
 	</repositories>
 </project>

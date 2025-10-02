@@ -29,7 +29,8 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 
 	private final GradientMethod gradientMethod;
 
-	private final int iterations ;
+	private final int iterations;
+	private boolean runnning = false;
 	private double[] learningRate ;
 	private final double eps ;
 	private final double[] betas ;
@@ -86,11 +87,12 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 	public abstract RandomVariable setValue(RandomVariable[] parameters) ;
 
 	public void run() {
+		runnning = true;
 		if (gradientMethod != GradientMethod.COMPLETE) {
 			final double[] m = new double[parameters.length];
 			final double[] v = new double[parameters.length];
 
-			for(int k=0; k<iterations; k++) {
+			for(int k=0; k<iterations && runnning; k++) {
 				final RandomVariable value = setValue(parameters);
 				if (value.getAverage() < bestValue || bestFitParameters == null) {
 					bestValue = value.getAverage();
@@ -138,7 +140,7 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 				v[i] = randomVariableFactory.createRandomVariable(0);
 			}
 
-			for(int k=0; k<iterations; k++) {
+			for(int k=0; k<iterations && runnning; k++) {
 				final RandomVariable value = setValue(parameters);
 				if (value.getAverage() < bestValue || bestFitParameters == null) {
 					bestValue = value.getAverage();
@@ -172,6 +174,10 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 			}
 		}
 	}
+	
+	public void stop() {
+		runnning = false;
+	}
 
 	public RandomVariableDifferentiable[] getBestFitParameters() {
 		return bestFitParameters;
@@ -188,7 +194,6 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 	public void setLearningRate(double learningRate, int index) {
 		this.learningRate[index] = learningRate;
 	}
-
 
 	private RandomVariable[] getGradient(RandomVariable[] parameters, RandomVariable value) {
 

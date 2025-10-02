@@ -5,7 +5,7 @@
 
 	<groupId>net.finmath</groupId>
 	<artifactId>climate-school-exercises</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<name>Climate School Exercises</name>
 
 	<properties>
@@ -16,7 +16,7 @@
 
 		<junit.version>5.6.2</junit.version>
 		<finmath-lib.version>6.0.20</finmath-lib.version>
-		<finmath-plot.version>0.5.5-SNAPSHOT</finmath-plot.version>
+		<finmath-plot.version>0.5.4</finmath-plot.version>
 
 		<!-- JavaFX -->
 		<javafx.version>21.0.5</javafx.version>
@@ -63,7 +63,6 @@
 			</exclusions>
 		</dependency>
 
-
 		<!-- JavaFX (classifier via profile) -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
@@ -95,7 +94,6 @@
 			<version>${javafx.version}</version>
 			<classifier>${javafx.platform}</classifier>
 		</dependency>
-
 
 		<!-- Tests -->
 		<dependency>
@@ -129,24 +127,72 @@
 				<version>2.22.2</version>
 			</plugin>
 
-			<!-- Start über mvn exec:java (optional; Eclipse braucht das nicht) -->
+			<!-- Start via exec:java -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
-					<mainClass>net.finmath.climateschool.other.ExperimentUI</mainClass>
+					<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
 				</configuration>
 			</plugin>
 
-			<!-- javafx-maven-plugin kannst du entfernen; für Eclipse unnötig -->
+			<!-- javafx-maven-plugin -->
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.8</version>
 				<configuration>
-					<mainClass>net.finmath.climateschool.other.ExperimentUI</mainClass>
+					<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
 				</configuration>
+			</plugin>
+
+			<!-- NEU: Dependencies für jpackage in target/ bereitstellen -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.6.1</version>
+				<executions>
+					<execution>
+						<id>copy-runtime-deps</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeScope>runtime</includeScope>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- NEU: jpackage – erzeugt OS-spezifische Installer -->
+			<plugin>
+				<groupId>org.panteleyev</groupId>
+				<artifactId>jpackage-maven-plugin</artifactId>
+				<version>1.7.1</version>
+				<executions>
+					<execution>
+						<id>make-installer</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jpackage</goal>
+						</goals>
+						<configuration>
+							<name>${project.name}</name>
+							<appVersion>${project.version}</appVersion>
+							<input>${project.build.directory}</input>
+							<mainJar>${project.build.finalName}.jar</mainJar>
+							<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
+							<!-- Bundle current JRE; later replace by jlink-Image -->
+							<runtimeImage>${java.home}</runtimeImage>
+							<destination>${project.basedir}/target/dist</destination>
+							<removeDestination>true</removeDestination>
+							<type>${pack.type}</type>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -163,6 +209,7 @@
 			</activation>
 			<properties>
 				<javafx.platform>mac-aarch64</javafx.platform>
+				<pack.type>DMG</pack.type>
 			</properties>
 		</profile>
 
@@ -176,6 +223,7 @@
 			</activation>
 			<properties>
 				<javafx.platform>mac</javafx.platform>
+				<pack.type>DMG</pack.type>
 			</properties>
 		</profile>
 
@@ -189,6 +237,7 @@
 			</activation>
 			<properties>
 				<javafx.platform>win</javafx.platform>
+				<pack.type>MSI</pack.type>
 			</properties>
 		</profile>
 
@@ -202,6 +251,7 @@
 			</activation>
 			<properties>
 				<javafx.platform>linux</javafx.platform>
+				<pack.type>DEB</pack.type>
 			</properties>
 		</profile>
 	</profiles>

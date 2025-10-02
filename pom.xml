@@ -282,8 +282,8 @@
 	</profiles>
 
 	<scm>
-		<connection>scm:git:https://github.com/OWNER/REPO.git</connection>
-		<developerConnection>scm:git:https://github.com/OWNER/REPO.git</developerConnection>
+		<connection>scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
+		<developerConnection>scm:git:https://github.com/finmath/climate-school-exercises.git</developerConnection>
 		<url>https://github.com/finmath/climate-school-exercises</url>
 		<tag>HEAD</tag>
 	</scm>

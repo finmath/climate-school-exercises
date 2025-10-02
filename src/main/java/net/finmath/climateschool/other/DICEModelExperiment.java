@@ -1,4 +1,4 @@
-package net.finmath.climateshool.other;
+package net.finmath.climateschool.other;
 
 import java.util.Arrays;
 import java.util.List;

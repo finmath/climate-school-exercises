@@ -282,7 +282,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
-		<developerConnection>scm:git:git@github.com:OWNER/REPO.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:finmath/climate-school-exercises.git</developerConnection>
 		<url>https://github.com/finmath/climate-school-exercises</url>
 		<tag>HEAD</tag>
 	</scm>

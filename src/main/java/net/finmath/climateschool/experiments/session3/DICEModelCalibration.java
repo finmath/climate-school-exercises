@@ -62,8 +62,8 @@ public class DICEModelCalibration {
 				.setTitle("Abatement (r = " + String.format("%.2f%%", discountRate*100) + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc");
 		plot.show();
 
-		final AdamOptimizerUsingFiniteDifferences optimizer = new AdamOptimizerUsingFiniteDifferences(initialParameters, 800, 0.1, GradientMethod.COMPLETE) {
-			private int i = 0;
+		final AdamOptimizerUsingFiniteDifferences optimizer = new AdamOptimizerUsingFiniteDifferences(initialParameters, 800, 0.1, GradientMethod.AVERAGE) {
+			private int iteration = 0;
 			@Override
 			public RandomVariable setValue(RandomVariable[] parameters) {
 
@@ -82,24 +82,32 @@ public class DICEModelCalibration {
 
 				final double value = climateModel.getValue().expectation().doubleValue();
 
+				// Penalty for non-smoothness - it works with out this, but this helps the optimizer to avoid onszillations (that are la
+				double roughness = 0.0;
+				for(int i=1; i<abatementParameter.length-2; i++) {
+					roughness += Math.pow(abatementParameter[i+1] - abatementParameter[i], 2.0);
+				}
+				roughness = Math.sqrt(roughness);
+				roughness /= abatementParameter.length;
+				roughness *= 0.1;
+
 				// Update the plot every 200 iterations
-				if(i%200 == 0) {
+				if(iteration%200 == 0) {
 					Plots.updateScatter(plot, timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getAbatement()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3);
 				}
-				i++;
+				iteration++;
 
-				return Scalar.of(-value);
+				return Scalar.of(-value);// + roughness);
 			}
 		};
 
 		optimizer.run();
-		System.out.println(Arrays.toString(Arrays.stream(optimizer.getBestFitParameters()).mapToDouble(RandomVariable::getAverage).toArray()));
-
 
 		// Get optimal value
 		final RandomVariable[] bestParameters = optimizer.getBestFitParameters();
 		double[] abatementParameter = Arrays.stream(bestParameters).mapToDouble(RandomVariable::getAverage).map(x -> Math.exp(-Math.exp(-x))).toArray();
 		abatementParameter[0] = 0.03;
+		System.out.println(Arrays.toString(abatementParameter));
 
 		/*
 		 * Create our abatement model

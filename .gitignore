@@ -26,3 +26,6 @@ replay_pid*
 /.settings/
 /.classpath
 /.project
+
+# macos
+.DS_Store

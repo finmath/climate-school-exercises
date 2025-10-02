@@ -206,8 +206,7 @@
 				</executions>
 			</plugin>
 
-			<!-- Maven Release Plugin: create v<version>; Tag-Push triggers
-			GitHub Action -->
+			<!-- Maven Release Plugin: create v<version>; Tag-Push triggers GitHub Action -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -217,8 +216,6 @@
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<pushChanges>true</pushChanges>
 					<arguments>-DskipTests</arguments>
-					<!-- verhindert lokalen Build (keine package-Phase) -->
-					<preparationGoals>clean validate</preparationGoals>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -284,8 +281,7 @@
 	</profiles>
 
 	<scm>
-		<connection>
-			scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
+		<connection>scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
 		<developerConnection>scm:git:git@github.com:OWNER/REPO.git</developerConnection>
 		<url>https://github.com/finmath/climate-school-exercises</url>
 		<tag>HEAD</tag>
@@ -294,8 +290,7 @@
 	<repositories>
 		<repository>
 			<id>lecture-maven-repo</id>
-			<url>
-				https://raw.githubusercontent.com/qntlb/numerical-methods-lecture/master/local-maven-repo</url>
+			<url>https://raw.githubusercontent.com/qntlb/numerical-methods-lecture/master/local-maven-repo</url>
 		</repository>
 	</repositories>
 </project>

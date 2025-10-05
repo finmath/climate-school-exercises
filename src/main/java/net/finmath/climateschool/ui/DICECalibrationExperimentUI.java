@@ -49,11 +49,13 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 
 	public DICECalibrationExperimentUI() {
 		super(List.of(
-				new Parameter("Discount Rate", 0.03, 0.01, 0.05),
-				new Parameter("Abatement Max Time", 50.0, 10.0, 200.0)
+				new Parameter("Discount Rate", 0.03, 0.01, 0.05)
+//				new Parameter("Abatement Max Time", 50.0, 10.0, 200.0)
 				));
 	}
 	
+	public String getTitle() { return "DICE Model - Full Abatement Model - Optimized Emisison Path (Calibration)"; }
+
 	public void runCalculation() {
 		Map<String, Double> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.value().getName(), p -> p.value().get()));
 

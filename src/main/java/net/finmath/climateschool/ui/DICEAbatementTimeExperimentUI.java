@@ -48,6 +48,8 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 	}
 	
 
+	public String getTitle() { return "DICE Model - One Parametric Abatement Model - NOT CALIBRATED"; }
+	
 	/** Führt deine Berechnung aus – hier als Platzhalter implementiert. */
 	public void runCalculation() {
 		Map<String, Double> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.value().getName(), p -> p.value().get()));

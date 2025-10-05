@@ -48,13 +48,13 @@ public abstract class ExperimentUI extends Application {
 	// The parameters
 	private final List<Parameter> parameters;
 
-    private final ExecutorService pool = Executors.newSingleThreadExecutor(r -> {
-        Thread t = new Thread(r, "compute-thread");
-        t.setDaemon(true);
-        return t;
-    });
-    private Future<?> currentJob;
-    
+	private final ExecutorService pool = Executors.newSingleThreadExecutor(r -> {
+		Thread t = new Thread(r, "compute-thread");
+		t.setDaemon(true);
+		return t;
+	});
+	private Future<?> currentJob;
+
 	private final PauseTransition debounce = new PauseTransition(Duration.millis(300));
 	private final DecimalFormat df = new DecimalFormat("#.####");
 
@@ -62,27 +62,28 @@ public abstract class ExperimentUI extends Application {
 		this.parameters = parameters;
 	}
 
+	abstract public String getTitle();
 	abstract public void runCalculation();
-	
+
 	public void runCalculationAsync() {
 		System.out.println("Starting calculation.");
-		   // laufende Berechnung abbrechen
-        if (currentJob != null && !currentJob.isDone()) {
-    		System.out.println("Cancel previous calculation.");
-        	currentJob.cancel(true);
-        }
+		// cancel running calculation
+		if (currentJob != null && !currentJob.isDone()) {
+			System.out.println("Cancel previous calculation.");
+			currentJob.cancel(true);
+		}
 
-        Task<Double> task = new Task<>() {
-            @Override
-            protected Double call() throws Exception {
-            	runCalculation();
-            	return 0.0;
-            }
-        };
+		Task<Double> task = new Task<>() {
+			@Override
+			protected Double call() throws Exception {
+				runCalculation();
+				return 0.0;
+			}
+		};
 
-        currentJob = pool.submit(task);
+		currentJob = pool.submit(task);
 	}
-	
+
 	public List<Parameter> getExperimentParameters() {
 		return parameters;
 	}
@@ -91,18 +92,18 @@ public abstract class ExperimentUI extends Application {
 	 * UI Part
 	 */
 
-    // Für eigenständigen Start (Fallback):
-    @Override
-    public void start(Stage stage) {
-        stage.setTitle("MyStandaloneDemo (Fenster)");
-        stage.setScene(new Scene(createContent()));
-        // Achtung: Hier KEIN Platform.exit() im onCloseRequest!
-        stage.show();
-    }
+	// Für eigenständigen Start (Fallback):
+	@Override
+	public void start(Stage stage) {
+		stage.setTitle("finmath Experiment (Window)");
+		stage.setScene(new Scene(createContent()));
+		// Achtung: Hier KEIN Platform.exit() im onCloseRequest!
+		stage.show();
+	}
 
-    // Für EMBEDDING im Host:
-    public Parent createContent() {
-        GridPane grid = new GridPane();
+	// Für EMBEDDING im Host:
+	public Parent createContent() {
+		GridPane grid = new GridPane();
 		grid.setHgap(12);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(16));
@@ -125,12 +126,17 @@ public abstract class ExperimentUI extends Application {
 		Button btnCompute = new Button("Calculate");
 		btnCompute.setOnAction(e -> runCalculationAsync());
 		buttons.getChildren().addAll(btnReset, btnCompute);
-
-		VBox root = new VBox(12, grid, buttons);
-		root.setPadding(new Insets(14));
 		buttons.setAlignment(Pos.CENTER_LEFT);
-        
-		return root;
+
+		VBox content = new VBox(12, grid, buttons);
+		content.setPadding(new Insets(14));
+
+		TitledPane group = new TitledPane(getTitle(), content);
+		group.setCollapsible(false);
+		group.setAnimated(false);
+		group.setMaxWidth(Double.MAX_VALUE);
+
+		return group;
 	}
 
 	/**

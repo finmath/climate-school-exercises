@@ -7,9 +7,12 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
@@ -88,9 +91,18 @@ public abstract class ExperimentUI extends Application {
 	 * UI Part
 	 */
 
-	@Override
-	public void start(Stage stage) {
-		GridPane grid = new GridPane();
+    // Für eigenständigen Start (Fallback):
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("MyStandaloneDemo (Fenster)");
+        stage.setScene(new Scene(createContent()));
+        // Achtung: Hier KEIN Platform.exit() im onCloseRequest!
+        stage.show();
+    }
+
+    // Für EMBEDDING im Host:
+    public Parent createContent() {
+        GridPane grid = new GridPane();
 		grid.setHgap(12);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(16));
@@ -117,12 +129,8 @@ public abstract class ExperimentUI extends Application {
 		VBox root = new VBox(12, grid, buttons);
 		root.setPadding(new Insets(14));
 		buttons.setAlignment(Pos.CENTER_LEFT);
-
-		// Window
-		Scene scene = new Scene(root, 720, 240);
-		stage.setTitle("Parameter – Control");
-		stage.setScene(scene);
-		stage.show();
+        
+		return root;
 	}
 
 	/**

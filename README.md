@@ -41,7 +41,7 @@ We provide a binary version of the experiments for
 - MacOS (file ending .dmg)
 - Linux (file ending .deb)
 
-at [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
+on the [Climate School Exercises Releases Page](https://github.com/finmath/climate-school-exercises/releases/latest).
 
 <p align="center"><img src="doc/images/finmath-climate-school-experiments.png" alt="" height="300"/></p>
 

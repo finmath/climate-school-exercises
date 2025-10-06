@@ -38,7 +38,7 @@ public class ExperimentsTree extends Application {
 		/** LRU-Cache (accessOrder=true). */
 		private static final LinkedHashMap<String, Parent> cache = new LinkedHashMap<>(16, 0.75f, true) {
 			@Override protected boolean removeEldestEntry(Map.Entry<String, Parent> eldest) {
-				// LRU-Eviction
+				// LRU cache eviction
 				return size() > maxCacheDepth;
 			}
 		};
@@ -87,19 +87,23 @@ public class ExperimentsTree extends Application {
 	 */
 	private final Map<String, Object> model = mapOf(
 			"DICE Model (Climate School)", mapOf(
-					"Info", (Supplier<Parent>) () -> new StackPane(new Label("Version 2025-10-06")),
+					"Info", (Supplier<Parent>) () -> getInfo(),
 					"One Parametric Abatement Model",
 					new ExperimentApplication(() -> new DICEAbatementTimeExperimentUI().createContent(), 1),
 					"One Parametric Abatement Model, Calibrated",
 					new ExperimentApplication(() -> new DICECalibrationOneParameterExperimentUI().createContent(), 1),
 					"Full Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationExperimentUI().createContent(), 1)
 					//,
-//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
+					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
 					),
 			"Interest Rates", mapOf(
 					"(tba)", (Runnable) () -> System.out.println("Will be added soon.")
 					)
 			);
+
+	private Parent getInfo() {
+		return null;
+	}
 
 	// Helper to iteratively generate LinkedHashMap
 	private static LinkedHashMap<String, Object> mapOf(Object... kv) {

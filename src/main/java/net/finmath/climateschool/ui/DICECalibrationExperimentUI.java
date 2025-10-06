@@ -180,7 +180,6 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 			Plots
 			.updateScatter(plotCarbon, timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getCarbonConcentration()).mapToDouble(CarbonConcentration::getExpectedCarbonConcentrationInAtmosphere).toArray(), 0, 300, 3)
 			.setTitle("Carbon Concentration (" + spec + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]");
-
 		}
 
 		if(plotEmission == null) {

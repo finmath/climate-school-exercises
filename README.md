@@ -43,7 +43,7 @@ We provide a binary version of the experiments for
 
 at [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
 
-<img src="doc/images/finmath-climate-school-experiments.png" alt="" height="66%"/>
+<img src="doc/images/finmath-climate-school-experiments.png" alt="" height="300"/>
 
 ### Installation and Running on Windows
 

@@ -14,7 +14,7 @@
 
 		<junit.version>5.6.2</junit.version>
 		<finmath-lib.version>6.0.20</finmath-lib.version>
-		<finmath-plot.version>0.5.4</finmath-plot.version>
+		<finmath-plot.version>0.5.6</finmath-plot.version>
 
 		<!-- JavaFX -->
 		<javafx.version>21.0.5</javafx.version>

@@ -1,24 +1,26 @@
 package net.finmath.climateschool.ui;
-import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.function.Supplier;
-
-import javafx.scene.Parent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.prefs.Preferences;
+
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  * UI Menu of different UI Experiments
@@ -114,9 +116,10 @@ public class ExperimentsTree extends Application {
 		return m;
 	}
 
-	private final BorderPane root = new BorderPane(new Label("Main Content"));
+	private final BorderPane root = new BorderPane();
+    private final StackPane contentPane = new StackPane(new Label("Main Content"));
 
-	// Recard with a label and arbitrary payload
+	// Record with a label and arbitrary payload
 	private record Entry(String label, Object payload) {}
 
 	@Override
@@ -135,14 +138,33 @@ public class ExperimentsTree extends Application {
 
 		tree.setOnMouseClicked(e -> runIfLeaf(tree.getSelectionModel().getSelectedItem(), stage));
 
-		root.setLeft(tree);
+		// --- NEU: SplitPane für frei einstellbare Sidebar-Breite
+		Preferences prefs = Preferences.userNodeForPackage(ExperimentsTree.class);
+		double divider = prefs.getDouble("sidebar.divider", 0.25); // 25% default
+
+		// Mindest-/Maximalbreite für den Tree (optional)
+		tree.setMinWidth(300);
+		tree.setMaxWidth(600);
+
+		SplitPane splitPane = new SplitPane(tree, contentPane);
+		splitPane.setDividerPositions(divider);
+
+		// Divider-Position persistieren
+		ChangeListener<Number> persist = (obs, o, n) -> prefs.putDouble("sidebar.divider", n.doubleValue());
+		splitPane.getDividers().get(0).positionProperty().addListener(persist);
+
+		// Context menu
+		MenuItem resetWidth = new MenuItem("Reset sidebar width");
+		resetWidth.setOnAction(e -> splitPane.setDividerPositions(0.25));
+		tree.setContextMenu(new ContextMenu(resetWidth));
+
+		root.setCenter(splitPane);
 
 		Scene scene = new Scene(root, 1024, 520);
 		stage.setScene(scene);
 		stage.setTitle("finmath Numerical Experiments");
 		stage.show();
 	}
-
 
 	/**
 	 * Action for a leaf node.
@@ -203,10 +225,11 @@ public class ExperimentsTree extends Application {
 			}
 		}
 		return String.join("/", parts);
-	}	
+	}
+
 	private void showInCenter(Parent content) {
-		root.setCenter(content);
-		BorderPane.setMargin(content, new javafx.geometry.Insets(8));
+		contentPane.getChildren().setAll(content);
+		StackPane.setMargin(content, new javafx.geometry.Insets(8));
 	}
 
 	// Searches zero-arg static method that creates returns a Parent (z.B. createContent())

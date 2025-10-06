@@ -43,6 +43,8 @@ We provide a binary version of the experiments for
 
 at [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
 
+<img src="doc/images/finmath-climate-school-experiments.png" alt="" height="66%"/>
+
 ### Installation and Running on Windows
 
 - Download the .msi installer from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
@@ -62,7 +64,14 @@ at [github.com/finmath/climate-school-exercises](https://github.com/finmath/clim
 
 ------
 
+**The following is for those with basic experience in programming.**
+
+------
+
+
 ## Numerical Experiments - Running and Modifying Code
+
+You can also run the raw code of the exeriments.
 
 There are currently seven different numerical experiments in the Java package `net.finmath.climateschool.experiments`.
 
@@ -93,7 +102,7 @@ the local git folder as Maven Project;
 - File → Import → Maven → Existing Maven Projects
 - Select the project folder in you *local* git folder.
 
-## Testing your Setup
+ä## Testing your Setup
 
 To test your setup, run the Java Class `Test.java` in the package `net.finmath.climateschool.begin`. To do so: In the Eclipse Project Explorer:
 
@@ -102,7 +111,7 @@ To test your setup, run the Java Class `Test.java` in the package `net.finmath.c
 - Right-click on the class `Test.java`,
 - then select “Run As → Java Application".
   
-## Update the Project (later)
+### Update the Project (later)
 
 To get an update of this project at a later time
 

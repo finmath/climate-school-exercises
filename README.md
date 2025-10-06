@@ -43,7 +43,7 @@ We provide a binary version of the experiments for
 
 at [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
 
-<img src="doc/images/finmath-climate-school-experiments.png" alt="" height="300"/>
+<p align="center"><img src="doc/images/finmath-climate-school-experiments.png" alt="" height="300"/></p>
 
 ### Installation and Running on Windows
 
@@ -60,7 +60,7 @@ at [github.com/finmath/climate-school-exercises](https://github.com/finmath/clim
 - Right-Click on the `Climate School Exercises` program an select open (double-click to open does not work here, because the file is not signed)
 - You will be asked to confirm to open the file, because the file is not signed
 
-<img src="doc/images/macos-context-menu-open.png" alt="isolated" width="200"/>
+<p align="center"><img src="doc/images/macos-context-menu-open.png" alt="isolated" width="200"/></p>
 
 ------
 

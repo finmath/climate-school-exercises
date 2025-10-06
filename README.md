@@ -10,9 +10,22 @@
 
 This repository contains some elementary experiments related to the DICE model, stochastic interest rates models and combinations thereof.
 
-The experiments are associated with a session at the *Munich Climate School* on *Climate Models and Interest Rate Risk*.
+The experiments are associated with a session at the *Munich Climate School* on *Climate Models and Interest Rate Risk*. **Note:** The repository may get some updates/improvements after the climate school.
 
-**Note:** The repository may get some updates/improvements after the climate school.
+The session will first discuss the theory and intuition behind integrated assessment models (IAMs)—the coupling of a physical climate model with an economic model. We will then combine the IAM with (stochastic) interest-rate models to analyze the effect of discounting.
+
+To make these ideas tangible, we use a full open-source implementation of the DICE model together with several interest-rate models and Monte Carlo simulation. This enables hands-on numerical experiments and, if you like, code exploration.
+
+There are three ways to participate:
+
+- **Lecture mode**: you simply follow the presentation — nothing required on your side.
+
+- **Gaming mode**: you download the executable program and run the graphical user interface to play with scenarios and parameters.
+
+- **Developer mode**: import the code into an IDE to inspect, run, and extend the implementation.
+
+Note: Programming experience is not required for lecture or gaming mode. The hands-on part is optional.
+If you’d like to run the code during the session, see optional setup below.
 
 ## Presentation
 
@@ -20,17 +33,44 @@ The experiments are associated with a session at the *Munich Climate School* on 
 
 ------
 
-## Numerical Experiments
+## Numerical Experiments through Graphical User Interface
 
-There are currently seven different numerical experiments in the package `net.finmath.climateschool.experiments`.
+We provide a binary version of the experiments for
+
+- Windows (file ending .msi)
+- MacOS (file ending .dmg)
+- Linux (file ending .deb)
+
+at [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
+
+### Installation and Running on Windows
+
+- Download the .msi installer from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
+- Run the installer (double click on the downloaded .msi file).
+- You will be asked twice to confirm the installation, because the file is not signed.
+- You now find the programm in `C:\Program Files\Climate School Exercises`. Open this folder an double click `Climate School Exercises.exe`.
+
+### Installation and Running on MacOS
+
+- Download the .dmg file from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest)
+- Open the downloaded .dmg file (double click on the downloaded .dmg file).
+- Optional: Move the  `Climate School Exercises` program to the application folder and open the application folder.
+- Right-Click on the `Climate School Exercises` program an select open (double-click to open does not work here, because the file is not signed)
+- You will be asked to confirm to open the file, because the file is not signed
+
+<img src="doc/images/macos-context-menu-open.png" alt="isolated" width="200"/>
+
+------
+
+## Numerical Experiments - Running and Modifying Code
+
+There are currently seven different numerical experiments in the Java package `net.finmath.climateschool.experiments`.
 
 Feel free play with them. Alter parameters and check results.
 
 Note: We use models from *finmath lib*. This code is open source and available at https://github.com/finmath/finmath-lib
 
-------
-
-## Importing in Eclipse from GitHub
+### Importing in Eclipse from GitHub
 
 Import this git repository into Eclipse and start working.
 

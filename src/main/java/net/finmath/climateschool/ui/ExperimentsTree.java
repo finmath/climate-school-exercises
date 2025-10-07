@@ -99,6 +99,7 @@ public class ExperimentsTree extends Application {
 					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
 					),
 			"Interest Rates", mapOf(
+					"Simulation of Hull White Paths", new ExperimentApplication(() -> new InterestRatesHullWhiteSimulationPathOfShortRate().createContent(), 1),
 					"(tba)", (Runnable) () -> System.out.println("Will be added soon.")
 					)
 			);
@@ -184,8 +185,8 @@ public class ExperimentsTree extends Application {
 				r.run();
 			}
 			else if (payload instanceof ExperimentApplication exp) {
-				String key = pathFor(item);              // eindeutiger Name (z.B. "DICE Model/Full Abatement …")
-				Parent content = exp.getView(key);       // holt aus namenbasiertem Cache oder baut neu
+				String key = pathFor(item);				// unique name of the experiment
+				Parent content = exp.getView(key);		// take content from cache or build it
 				showInCenter(content);
 			}
 			else if (payload instanceof Supplier<?> s) {

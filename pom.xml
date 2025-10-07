@@ -3,7 +3,7 @@
 
 	<groupId>net.finmath</groupId>
 	<artifactId>climate-school-exercises</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.7</version>
 	<name>Climate School Exercises</name>
 
 	<properties>
@@ -282,7 +282,7 @@
 		<connection>scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
 		<developerConnection>scm:git:https://github.com/finmath/climate-school-exercises.git</developerConnection>
 		<url>https://github.com/finmath/climate-school-exercises</url>
-		<tag>HEAD</tag>
+		<tag>v1.0.7</tag>
 	</scm>
 
 	<repositories>

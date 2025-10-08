@@ -13,7 +13,7 @@
 		<compiler-plugin.version>3.8.1</compiler-plugin.version>
 
 		<junit.version>5.6.2</junit.version>
-		<finmath-lib.version>6.0.20</finmath-lib.version>
+		<finmath-lib.version>6.0.22</finmath-lib.version>
 		<finmath-plot.version>0.5.6</finmath-plot.version>
 
 		<!-- JavaFX -->

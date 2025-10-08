@@ -3,11 +3,14 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.prefs.Preferences;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,6 +23,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -105,7 +109,14 @@ public class ExperimentsTree extends Application {
 			);
 
 	private Parent getInfo() {
-		return null;
+		VBox box = new VBox(
+				new Label("Collection of Parameter Experiments based on Models from finmath lib"),
+				new Label("Version 2025-10-08"),
+				new Label("Select a topic on the left; set the parameters or select calculate.")
+				);
+		box.setAlignment(Pos.CENTER);
+		box.setPadding(new Insets(12));
+		return box;
 	}
 
 	// Helper to iteratively generate LinkedHashMap
@@ -118,7 +129,7 @@ public class ExperimentsTree extends Application {
 	}
 
 	private final BorderPane root = new BorderPane();
-    private final StackPane contentPane = new StackPane(new Label("Main Content"));
+	private final StackPane contentPane = new StackPane(new Label("Main Content"));
 
 	// Record with a label and arbitrary payload
 	private record Entry(String label, Object payload) {}
@@ -143,9 +154,20 @@ public class ExperimentsTree extends Application {
 		Preferences prefs = Preferences.userNodeForPackage(ExperimentsTree.class);
 		double divider = prefs.getDouble("sidebar.divider", 0.25); // 25% default
 
-		// Mindest-/Maximalbreite für den Tree (optional)
+		// Set min and max width of left menu
 		tree.setMinWidth(300);
 		tree.setMaxWidth(600);
+
+		// Select default (first child)
+		javafx.application.Platform.runLater(() -> {
+			TreeItem<Entry> defaultItem = rootItem.getChildren().isEmpty() ? null : rootItem.getChildren().get(0);
+			while(!defaultItem.getChildren().isEmpty()) defaultItem = defaultItem.getChildren().get(0);
+			if (defaultItem != null) {
+				tree.getSelectionModel().select(defaultItem);
+				tree.getFocusModel().focus(tree.getRow(defaultItem));
+				tree.scrollTo(tree.getRow(defaultItem));
+			}
+		});		
 
 		SplitPane splitPane = new SplitPane(tree, contentPane);
 		splitPane.setDividerPositions(divider);

@@ -98,7 +98,13 @@ public class ExperimentsTree extends Application {
 					new ExperimentApplication(() -> new DICEAbatementTimeExperimentUI().createContent(), 1),
 					"One Parametric Abatement Model, Calibrated",
 					new ExperimentApplication(() -> new DICECalibrationOneParameterExperimentUI().createContent(), 1),
-					"Full Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationExperimentUI().createContent(), 1)
+					"Full Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationExperimentUI().createContent(), 1),
+					"Cost", mapOf(
+							"Cost in the One Parametric Abatement Model",
+							new ExperimentApplication(() -> new DICEAbatementTimeToCostExperiment().createContent(), 1)
+							
+							)
+					
 					//,
 					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
 					),

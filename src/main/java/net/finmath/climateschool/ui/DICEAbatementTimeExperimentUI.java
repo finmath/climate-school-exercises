@@ -34,6 +34,9 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 	private static final double timeStep = 1.0;
 	private static final double timeHorizon = 500.0;
 
+	private final DecimalFormat numberDigit3 = new DecimalFormat("#.000");
+	private final DecimalFormat numberPercent2 = new DecimalFormat("#.00%");
+
 	Plot2D plotTemperature = null;
 	Plot2D plotCarbon = null;
 	Plot2D plotEmission = null;
@@ -94,17 +97,18 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 		 * Plots
 		 */
 
+		String paramSpec = "T(\u03BC=1) =" + numberDigit3.format(abatementMaxTime) + ", r = " + numberPercent2.format(discountRate);
 
 		if(plotTemperature == null) {
 			plotTemperature = Plots
 					.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getTemperature()).mapToDouble(Temperature::getExpectedTemperatureOfAtmosphere).toArray(), 0, 300, 3)
-					.setTitle("Temperature (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]");
+					.setTitle("Temperature (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]");
 			plotTemperature.show();
 		}
 		else {
 			Plots
 			.updateScatter(plotTemperature, timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getTemperature()).mapToDouble(Temperature::getExpectedTemperatureOfAtmosphere).toArray(), 0, 300, 3)
-			.setTitle("Temperature (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]");
+			.setTitle("Temperature (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]");
 
 		}
 
@@ -112,51 +116,51 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 		if(plotCarbon == null) {
 			plotCarbon = Plots
 					.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getCarbonConcentration()).mapToDouble(CarbonConcentration::getExpectedCarbonConcentrationInAtmosphere).toArray(), 0, 300, 3)
-					.setTitle("Carbon Concentration (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]");
+					.setTitle("Carbon Concentration (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]");
 			plotCarbon.show();
 		}
 		else {
 			Plots
 			.updateScatter(plotCarbon, timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getCarbonConcentration()).mapToDouble(CarbonConcentration::getExpectedCarbonConcentrationInAtmosphere).toArray(), 0, 300, 3)
-			.setTitle("Carbon Concentration (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]");
+			.setTitle("Carbon Concentration (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]");
 
 		}
 
 		if(plotEmission == null) {
 			plotEmission = Plots
 					.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getEmission()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-					.setTitle("Emission (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]");
+					.setTitle("Emission (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]");
 			plotEmission.show();
 		}
 		else {
 			Plots
 			.updateScatter(plotEmission, timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getEmission()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-			.setTitle("Emission (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]");
+			.setTitle("Emission (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]");
 
 		}
 
 		if(plotOutput == null) {
 			plotOutput = Plots
 					.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getGDP()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-					.setTitle("Output (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel(" Output [Tr$2005]");			
+					.setTitle("Output (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel(" Output [Tr$2005]");			
 			plotOutput.show();
 		}
 		else {
 			Plots
 			.updateScatter(plotOutput, timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getGDP()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-			.setTitle("Output (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel(" Output [Tr$2005]");
+			.setTitle("Output (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel(" Output [Tr$2005]");
 		}
 
 		if(plotAbatement == null) {
 			plotAbatement = Plots
 					.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getAbatement()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-					.setTitle("Abatement (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc");
+					.setTitle("Abatement (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc");
 			plotAbatement.show();
 		}
 		else {
 			Plots
 			.updateScatter(plotAbatement, timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getAbatement()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-			.setTitle("Abatement (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc");
+			.setTitle("Abatement (" + paramSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc");
 		}
 	}
 }

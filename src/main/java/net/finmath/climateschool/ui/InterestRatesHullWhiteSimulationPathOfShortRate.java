@@ -51,6 +51,9 @@ public class InterestRatesHullWhiteSimulationPathOfShortRate extends ExperimentU
 	private static final double timeStep = 1.0;
 	private static final double timeHorizon = 500.0;
 
+	private final DecimalFormat numberDigit3 = new DecimalFormat("#.000");
+	private final DecimalFormat numberPercent2 = new DecimalFormat("#.00%");
+
 	Plot2D plot = null;
 
 	public InterestRatesHullWhiteSimulationPathOfShortRate() {

@@ -39,6 +39,9 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 	private static final double timeStep = 1.0;
 	private static final double timeHorizon = 500.0;
 
+	private final DecimalFormat numberDigit3 = new DecimalFormat("#.000");
+	private final DecimalFormat numberPercent2 = new DecimalFormat("#.00%");
+
 	double[] initialParameters;
 
 	Plot2D plotTemperature = null;
@@ -145,7 +148,7 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 		 */
 		final ClimateModel climateModel = new DICEModel(timeDiscretization, abatementFunction, savingsRateFunction, discountRate);
 		
-		String spec = "(r = " + discountRate + ")";
+		String spec = "r = " + numberPercent2.format(discountRate) + "";
 		plot(climateModel, spec);
 	}
 

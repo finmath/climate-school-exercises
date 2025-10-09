@@ -7,5 +7,6 @@ public class StartUI {
 //		javafx.application.Application.launch(DICECalibrationExperimentUI.class, args);
 //		javafx.application.Application.launch(DICEAbatementTimeExperimentUI.class, args);
 //		javafx.application.Application.launch(InterestRatesHullWhiteSimulationPathOfShortRate.class, args);
-	}
+//		javafx.application.Application.launch(DICEAbatementTimeToCostExperiment.class, args);
+		}
 }

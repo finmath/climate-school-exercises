@@ -1,38 +1,24 @@
 package net.finmath.climateschool.ui;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.util.StringConverter;
-import javafx.animation.PauseTransition;
-import javafx.util.converter.NumberStringConverter;
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+
 import net.finmath.climate.models.CarbonConcentration;
 import net.finmath.climate.models.ClimateModel;
 import net.finmath.climate.models.Temperature;
 import net.finmath.climate.models.dice.DICEModel;
 import net.finmath.climateschool.utilities.AdamOptimizerUsingFiniteDifferences;
 import net.finmath.climateschool.utilities.AdamOptimizerUsingFiniteDifferences.GradientMethod;
-import net.finmath.optimizer.GoldenSectionSearch;
 import net.finmath.plots.Plot2D;
 import net.finmath.plots.Plots;
 import net.finmath.stochastic.RandomVariable;
 import net.finmath.stochastic.Scalar;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
-
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 public class DICECalibrationExperimentUI extends ExperimentUI {
 

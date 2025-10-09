@@ -1,50 +1,28 @@
 package net.finmath.climateschool.ui;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.util.StringConverter;
-import javafx.animation.PauseTransition;
-import javafx.util.converter.NumberStringConverter;
-import net.finmath.climate.models.CarbonConcentration;
-import net.finmath.climate.models.ClimateModel;
-import net.finmath.climate.models.Temperature;
-import net.finmath.climate.models.dice.DICEModel;
+import java.awt.BasicStroke;
+import java.awt.Rectangle;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import net.finmath.climateschool.utilities.ModelFactory;
 import net.finmath.climateschool.utilities.RandomOperators;
 import net.finmath.montecarlo.interestrate.TermStructureMonteCarloSimulationModel;
-import net.finmath.optimizer.GoldenSectionSearch;
 import net.finmath.plots.DoubleToRandomVariableFunction;
 import net.finmath.plots.GraphStyle;
-import net.finmath.plots.Plot;
 import net.finmath.plots.Plot2D;
-import net.finmath.plots.PlotProcess2D;
 import net.finmath.plots.Plotable2D;
 import net.finmath.plots.PlotablePoints2D;
-import net.finmath.plots.Plots;
 import net.finmath.plots.Point2D;
 import net.finmath.stochastic.RandomOperator;
 import net.finmath.stochastic.RandomVariable;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
-
-import java.awt.BasicStroke;
-import java.awt.Rectangle;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.DoubleUnaryOperator;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 public class InterestRatesHullWhiteSimulationPathOfShortRate extends ExperimentUI {
 

@@ -1,7 +1,13 @@
 package net.finmath.climateschool.ui;
 
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
@@ -9,32 +15,20 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-import javafx.animation.PauseTransition;
 import javafx.util.converter.NumberStringConverter;
-import net.finmath.climate.models.CarbonConcentration;
-import net.finmath.climate.models.ClimateModel;
-import net.finmath.climate.models.Temperature;
-import net.finmath.climate.models.dice.DICEModel;
-import net.finmath.plots.Plot2D;
-import net.finmath.plots.Plots;
-import net.finmath.stochastic.RandomVariable;
-import net.finmath.time.TimeDiscretization;
-import net.finmath.time.TimeDiscretizationFromArray;
-
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 public abstract class ExperimentUI extends Application {
 

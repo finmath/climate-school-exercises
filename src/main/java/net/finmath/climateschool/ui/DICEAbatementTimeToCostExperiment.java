@@ -12,13 +12,9 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import net.finmath.climate.models.CarbonConcentration;
 import net.finmath.climate.models.ClimateModel;
-import net.finmath.climate.models.Temperature;
 import net.finmath.climate.models.dice.DICEModel;
-import net.finmath.climateschool.utilities.ClimateModelInformation;
 import net.finmath.plots.GraphStyle;
-import net.finmath.plots.Plot;
 import net.finmath.plots.Plot2D;
 import net.finmath.plots.PlotablePoints2D;
 import net.finmath.plots.Plots;

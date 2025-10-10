@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -29,15 +31,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
+import net.finmath.climateschool.ui.parameter.BooleanParameter;
+import net.finmath.climateschool.ui.parameter.DoubleParameter;
+import net.finmath.climateschool.ui.parameter.Parameter;
 
 public abstract class ExperimentUI extends Application {
-
-	// A parameter
-	public record Parameter(SimpleDoubleProperty value, double initial, double min, double max) {
-		public Parameter(String name, double value, double min, double max) {
-			this(new SimpleDoubleProperty(null, name, value), value, min, max);
-		};
-	}
 
 	// The parameters
 	private final List<Parameter> parameters;
@@ -139,30 +137,25 @@ public abstract class ExperimentUI extends Application {
 	 * @param grid
 	 */
 	private void addHeader(GridPane grid) {
-		Label hName   = new Label("Parameter");
-		Label hSlider = new Label("Value");
-		Label hMin    = new Label("Min");
-		Label hMax    = new Label("Max");
+		Label hName			= new Label("Parameter");
+		Label hValue		= new Label("Value");
+		Label hConstrain	= new Label("Constrain");
 
 		hName.getStyleClass().add("header");
-		hSlider.getStyleClass().add("header");
-		hMin.getStyleClass().add("header");
-		hMax.getStyleClass().add("header");
+		hValue.getStyleClass().add("header");
+		hConstrain.getStyleClass().add("header");
 
-		grid.add(hName,   0, 0);
-		grid.add(hSlider, 1, 0);
-		grid.add(hMin,    2, 0);
-		grid.add(hMax,    3, 0);
+		grid.add(hName,      0, 0);
+		grid.add(hValue,     1, 0);
+		grid.add(hConstrain, 2, 0);
 
 		ColumnConstraints c0 = new ColumnConstraints();
 		c0.setPercentWidth(25);
 		ColumnConstraints c1 = new ColumnConstraints();
 		c1.setPercentWidth(55);
 		ColumnConstraints c2 = new ColumnConstraints();
-		c2.setPercentWidth(10);
-		ColumnConstraints c3 = new ColumnConstraints();
-		c3.setPercentWidth(10);
-		grid.getColumnConstraints().addAll(c0, c1, c2, c3);
+		c2.setPercentWidth(30);
+		grid.getColumnConstraints().addAll(c0, c1, c2);
 	}
 
 	/**
@@ -172,68 +165,94 @@ public abstract class ExperimentUI extends Application {
 	 * @param p The parameter.
 	 * @return The next row index.
 	 */
-	private int addParameterRow(GridPane grid, int row, Parameter p) {
-		double lo = Math.min(p.min(), p.max());
-		double hi = Math.max(p.min(), p.max());
-		SimpleDoubleProperty value = p.value();
+	private int addParameterRow(GridPane grid, int row, Parameter parameter) {
+		if(parameter instanceof DoubleParameter p) {
+			double lo = Math.min(p.getSpec().min(), p.getSpec().max());
+			double hi = Math.max(p.getSpec().min(), p.getSpec().max());
+			SimpleDoubleProperty value = p.getBindableValue();
 
-		Label name = new Label(value.getName());
-		name.setMinWidth(160);
+			Label name = new Label(value.getName());
+			name.setMinWidth(160);
 
-		// Slider + Value-Textfeld gebündelt
-		Slider slider = new Slider(lo, hi, value.get());
-		slider.setShowTickLabels(true);
-		slider.setShowTickMarks(true);
-		slider.setMajorTickUnit((hi - lo) / 4.0);
-		slider.setMinorTickCount(4);
-		slider.setBlockIncrement((hi - lo) / 100.0);
+			// Slider + Value-Textfeld gebündelt
+			Slider slider = new Slider(lo, hi, value.get());
+			slider.setShowTickLabels(true);
+			slider.setShowTickMarks(true);
+			slider.setMajorTickUnit((hi - lo) / 4.0);
+			slider.setMinorTickCount(4);
+			slider.setBlockIncrement((hi - lo) / 100.0);
 
-		TextField valueField = new TextField(df.format(value.get()));
-		valueField.setPrefColumnCount(8);
-		HBox sliderBox = new HBox(8, slider, valueField);
-		sliderBox.setAlignment(Pos.CENTER_LEFT);
+			TextField valueField = new TextField(df.format(value.get()));
+			valueField.setPrefColumnCount(8);
+			HBox sliderBox = new HBox(8, slider, valueField);
+			sliderBox.setAlignment(Pos.CENTER_LEFT);
 
-		// min/max Labels
-		Label minLabel = new Label(df.format(lo));
-		Label maxLabel = new Label(df.format(hi));
+			// constrain Labels
+			Label constrainLabel = new Label("in (" + df.format(lo) + "," + df.format(hi)+ ")");
 
-		// Bidirektionales Binding (mit robuster Konvertierung)
-		StringConverter<Number> conv = new NumberStringConverter(df);
-		// Slider -> Textfeld
-		valueField.textProperty().bindBidirectional(slider.valueProperty(), conv);
-		// Property <-> Slider (bleibt Quelle der Wahrheit)
-		value.bindBidirectional(slider.valueProperty());
+			// Bidirektionales Binding (mit robuster Konvertierung)
+			StringConverter<Number> conv = new NumberStringConverter(df);
+			// Slider -> Textfeld
+			valueField.textProperty().bindBidirectional(slider.valueProperty(), conv);
+			// Property <-> Slider (bleibt Quelle der Wahrheit)
+			value.bindBidirectional(slider.valueProperty());
 
-		// Änderungen entprellt berechnen
-		slider.valueProperty().addListener((obs, oldV, newV) -> debounce.playFromStart());
-		valueField.setOnAction(e -> debounce.playFromStart());
-		valueField.focusedProperty().addListener((obs, was, isNow) -> {
-			if (!isNow) debounce.playFromStart(); // bei Fokus-Verlust
-		});
+			// Änderungen entprellt berechnen
+			slider.valueProperty().addListener((obs, oldV, newV) -> debounce.playFromStart());
+			valueField.setOnAction(e -> debounce.playFromStart());
+			valueField.focusedProperty().addListener((obs, was, isNow) -> {
+				if (!isNow) debounce.playFromStart(); // bei Fokus-Verlust
+			});
 
-		// Tooltip mit aktuellem Wert
-		Tooltip tip = new Tooltip();
-		tip.textProperty().bind(Bindings.createStringBinding(
-				() -> value.getName() + ": " + df.format(slider.getValue()), slider.valueProperty()));
-		Tooltip.install(slider, tip);
+			// Tooltip mit aktuellem Wert
+			Tooltip tip = new Tooltip();
+			tip.textProperty().bind(Bindings.createStringBinding(
+					() -> value.getName() + ": " + df.format(slider.getValue()), slider.valueProperty()));
+			Tooltip.install(slider, tip);
 
-		grid.add(name,      0, row);
-		grid.add(sliderBox, 1, row);
-		grid.add(minLabel,  2, row);
-		grid.add(maxLabel,  3, row);
+			grid.add(name,      0, row);
+			grid.add(sliderBox, 1, row);
+			grid.add(constrainLabel,  2, row);
+		}
+		else if(parameter instanceof BooleanParameter p) {
+			SimpleBooleanProperty value = p.getBindableValue();
 
+			Label name = new Label(value.getName());
+			name.setMinWidth(160);
+
+			CheckBox check = new CheckBox();
+			check.setAllowIndeterminate(false);
+			check.setSelected(value.get());                       // initial
+			check.selectedProperty().bindBidirectional(value);    // bidirektional
+
+			// Änderungen entprellt berechnen
+			check.setOnAction(e -> debounce.playFromStart());
+			value.addListener((obs, oldV, newV) -> debounce.playFromStart());
+
+			// Tooltip with current state
+			Tooltip tip = new Tooltip();
+			tip.textProperty().bind(Bindings.when(check.selectedProperty())
+					.then(value.getName() + ": yes")
+					.otherwise(value.getName() + ": no"));
+			Tooltip.install(check, tip);
+
+			grid.add(name, 0, row);
+			grid.add(check, 1, row);
+		}
 		return row + 1;
 	}
 
 	/** Setzt alle Werte auf die ursprünglich übergebenen Startwerte (geklammert auf min/max). */
 	private void resetToDefaults() {
-		for (Parameter p : parameters) {
-			double lo = Math.min(p.min(), p.max());
-			double hi = Math.max(p.min(), p.max());
-			double value = clamp(p.initial, lo, hi);
-			p.value().set(value);
+		for (Parameter parameter : parameters) {
+			if(parameter instanceof DoubleParameter p) {
+				double lo = Math.min(p.getSpec().min(), p.getSpec().max());
+				double hi = Math.max(p.getSpec().min(), p.getSpec().max());
+				double value = clamp(p.getSpec().initial(), lo, hi);
+				p.getBindableValue().set(value);
+			}
+			debounce.playFromStart();
 		}
-		debounce.playFromStart();
 	}
 
 	private static double clamp(double v, double lo, double hi) {

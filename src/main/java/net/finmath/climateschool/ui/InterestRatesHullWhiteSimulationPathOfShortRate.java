@@ -10,6 +10,7 @@ import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import net.finmath.climateschool.ui.parameter.DoubleParameter;
 import net.finmath.climateschool.utilities.ModelFactory;
 import net.finmath.climateschool.utilities.RandomOperators;
 import net.finmath.montecarlo.interestrate.TermStructureMonteCarloSimulationModel;
@@ -36,10 +37,10 @@ public class InterestRatesHullWhiteSimulationPathOfShortRate extends ExperimentU
 
 	public InterestRatesHullWhiteSimulationPathOfShortRate() {
 		super(List.of(
-				new Parameter("Initial Value", 0.03, 0.01, 0.05),
-				new Parameter("Long Term Value", 0.03, 0.01, 0.05),
-				new Parameter("Mean Reversion Speed", 0.005, 0.001, 0.050),
-				new Parameter("Volatility", 0.001, 0.0001, 0.005)
+				new DoubleParameter("Initial Value", 0.03, 0.01, 0.05),
+				new DoubleParameter("Long Term Value", 0.03, 0.01, 0.05),
+				new DoubleParameter("Mean Reversion Speed", 0.005, 0.001, 0.050),
+				new DoubleParameter("Volatility", 0.001, 0.0001, 0.005)
 				));
 	}
 	
@@ -47,15 +48,15 @@ public class InterestRatesHullWhiteSimulationPathOfShortRate extends ExperimentU
 	public String getTitle() { return "Hull White Model - Simulation of Interest Rate (Short Rate)"; }
 
 	public void runCalculation() {
-		Map<String, Double> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.value().getName(), p -> p.value().get()));
+		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
 
 		System.out.println("Calculation with Parameters: " + currentParameterSet);
 
 		double timeHorizon = 150.0;
-		double shortRateInitialValue = currentParameterSet.get("Initial Value");
-		double shortRateLongTermValue = currentParameterSet.get("Long Term Value");
-		double shortRateMeanreversion = currentParameterSet.get("Mean Reversion Speed");
-		double shortRateVolatility = currentParameterSet.get("Volatility");
+		double shortRateInitialValue = (Double)currentParameterSet.get("Initial Value");
+		double shortRateLongTermValue = (Double)currentParameterSet.get("Long Term Value");
+		double shortRateMeanreversion = (Double)currentParameterSet.get("Mean Reversion Speed");
+		double shortRateVolatility = (Double)currentParameterSet.get("Volatility");
 		
 		/*
 		 * Create a time discretization

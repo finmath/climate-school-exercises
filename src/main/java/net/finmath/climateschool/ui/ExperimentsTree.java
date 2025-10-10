@@ -97,13 +97,7 @@ public class ExperimentsTree extends Application {
 					new ExperimentApplication(() -> new DICEAbatementTimeExperimentUI().createContent(), 1),
 					"One Parametric Abatement Model, Calibrated",
 					new ExperimentApplication(() -> new DICECalibrationOneParameterExperimentUI().createContent(), 1),
-					"Full Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationExperimentUI().createContent(), 1),
-					"Cost", mapOf(
-							"Cost in the One Parametric Abatement Model",
-							new ExperimentApplication(() -> new DICEAbatementTimeToCostExperiment().createContent(), 1)
-							
-							)
-					
+					"Full Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationExperimentUI().createContent(), 1)
 					//,
 					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
 					),
@@ -116,7 +110,7 @@ public class ExperimentsTree extends Application {
 	private Parent getInfo() {
 		VBox box = new VBox(
 				new Label("Collection of Parameter Experiments based on Models from finmath lib"),
-				new Label("Version 2025-10-08"),
+				new Label("Version 2025-10-09"),
 				new Label("Select a topic on the left; set the parameters or select calculate.")
 				);
 		box.setAlignment(Pos.CENTER);

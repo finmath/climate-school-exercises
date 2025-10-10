@@ -8,4 +8,5 @@ module net.finmath.climateschool {
 	requires transitive javafx.controls;
 	requires javafx.graphics;
 	requires java.prefs;
+	requires javafx.base;
 }

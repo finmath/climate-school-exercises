@@ -3,6 +3,7 @@ package net.finmath.climateschool.ui.parameter;
 import javafx.beans.property.Property;
 
 public class Parameter {
+
 	private Property<?> bindableValue;
 	private ParameterSpec spec;
 

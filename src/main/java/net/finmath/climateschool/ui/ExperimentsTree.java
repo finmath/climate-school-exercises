@@ -42,6 +42,8 @@ public class ExperimentsTree extends Application {
 
 		/** LRU-Cache (accessOrder=true). */
 		private static final LinkedHashMap<String, Parent> cache = new LinkedHashMap<>(16, 0.75f, true) {
+			private static final long serialVersionUID = -3650668979377727071L;
+
 			@Override protected boolean removeEldestEntry(Map.Entry<String, Parent> eldest) {
 				// LRU cache eviction
 				return size() > maxCacheDepth;
@@ -272,7 +274,6 @@ public class ExperimentsTree extends Application {
 	}
 
 	// --- Map -> Tree ---------------------------------------------------------
-	@SuppressWarnings("unchecked")
 	private TreeItem<Entry> toTree(String label, Object node) {
 		if (node instanceof Map<?,?> m) {
 			TreeItem<Entry> parent = new TreeItem<>(new Entry(label, null));

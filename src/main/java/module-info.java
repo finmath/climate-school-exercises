@@ -1,6 +1,7 @@
 module net.finmath.climateschool {
 
 	exports net.finmath.climateschool.ui;
+	exports net.finmath.climateschool.ui.parameter;
 
 	requires net.finmath.lib;
 	requires net.finmath.plots;

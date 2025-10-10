@@ -7,17 +7,13 @@ import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-import net.finmath.climate.models.CarbonConcentration;
 import net.finmath.climate.models.ClimateModel;
-import net.finmath.climate.models.Temperature;
 import net.finmath.climate.models.dice.DICEModel;
 import net.finmath.climateschool.ui.parameter.BooleanParameter;
 import net.finmath.climateschool.ui.parameter.DoubleParameter;
 import net.finmath.climateschool.utilities.AdamOptimizerUsingFiniteDifferences;
-import net.finmath.climateschool.utilities.DICEModelPlots;
 import net.finmath.climateschool.utilities.AdamOptimizerUsingFiniteDifferences.GradientMethod;
-import net.finmath.plots.Plot2D;
-import net.finmath.plots.Plots;
+import net.finmath.climateschool.utilities.DICEModelPlots;
 import net.finmath.stochastic.RandomVariable;
 import net.finmath.stochastic.Scalar;
 import net.finmath.time.TimeDiscretization;

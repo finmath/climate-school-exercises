@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.finmath</groupId>
@@ -231,7 +233,8 @@
 				</executions>
 			</plugin>
 
-			<!-- Maven Release Plugin: create v<version>; Tag-Push triggers GitHub Action -->
+			<!-- Maven Release Plugin: create v<version>; Tag-Push triggers
+			GitHub Action -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -303,11 +306,46 @@
 				<pack.type>DEB</pack.type>
 			</properties>
 		</profile>
+
+		<profile>
+			<id>windows-only-temp</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.panteleyev</groupId>
+						<artifactId>jpackage-maven-plugin</artifactId>
+						<version>1.7.1</version>
+						<executions>
+							<execution>
+								<id>make-installer</id>
+								<configuration>
+									<additionalOptions>
+										<additionalOption>--vendor</additionalOption>
+										<additionalOption>finmath.net</additionalOption>
+										<additionalOption>--verbose</additionalOption>
+										<additionalOption>--temp</additionalOption>
+										<additionalOption>D:\t</additionalOption>
+									</additionalOptions>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 
 	<scm>
-		<connection>scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
-		<developerConnection>scm:git:https://github.com/finmath/climate-school-exercises.git</developerConnection>
+		<connection>
+			scm:git:https://github.com/finmath/climate-school-exercises.git</connection>
+		<developerConnection>
+			scm:git:https://github.com/finmath/climate-school-exercises.git</developerConnection>
 		<url>https://github.com/finmath/climate-school-exercises</url>
 		<tag>HEAD</tag>
 	</scm>
@@ -315,7 +353,8 @@
 	<repositories>
 		<repository>
 			<id>lecture-maven-repo</id>
-			<url>https://raw.githubusercontent.com/qntlb/numerical-methods-lecture/master/local-maven-repo</url>
+			<url>
+				https://raw.githubusercontent.com/qntlb/numerical-methods-lecture/master/local-maven-repo</url>
 		</repository>
 	</repositories>
 </project>

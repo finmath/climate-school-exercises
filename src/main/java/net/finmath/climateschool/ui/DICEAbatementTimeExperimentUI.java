@@ -3,6 +3,7 @@ package net.finmath.climateschool.ui;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -31,12 +32,11 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 				new BooleanParameter("Show Cost", false)
 				));
 	}
-	
+
 
 	public String getTitle() { return "DICE Model - One Parametric Abatement Model - NOT CALIBRATED"; }
-	
-	/** Führt deine Berechnung aus – hier als Platzhalter implementiert. */
-	public void runCalculation() {
+
+	public void runCalculation(BooleanSupplier isCancelled) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
 
 		System.out.println("Calculation with Parameters: " + currentParameterSet);
@@ -78,16 +78,30 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 		 * Plots
 		 */
 
-		String spec = "T(\u03BC=1) =" + numberDigit3.format(abatementMaxTime) + ", r = " + numberPercent2.format(discountRate);		
+		if(!Thread.currentThread().isInterrupted() && !isCancelled.getAsBoolean()) {
+			synchronized(this) {
+			String spec = "T(\u03BC=1) =" + numberDigit3.format(abatementMaxTime) + ", r = " + numberPercent2.format(discountRate);		
 
-		plots.plot(climateModel, spec);
+			plots.plot(climateModel, spec);
 
-		boolean showCost = (boolean)currentParameterSet.get("Show Cost");
-		if(showCost) {
-			plots.plotCost(climateModel, discountRate, spec);
+			boolean showCost = (boolean)currentParameterSet.get("Show Cost");
+			if(showCost) {
+				plots.plotCost(climateModel, discountRate, spec);
+			}
+			else {
+				plots.closeCost();
+			}
+			}
 		}
-		else {
-			plots.closeCost();
+	}
+
+
+	@Override
+	protected void onClose() {
+		synchronized(this) {
+		super.onClose();
+
+		if(plots != null) plots.close();
 		}
 	}
 }

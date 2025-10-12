@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -35,13 +36,13 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 		super(List.of(
 				new DoubleParameter("Discount Rate", 0.03, 0.01, 0.05),
 				new BooleanParameter("Show Cost", false)
-//				new Parameter("Abatement Max Time", 50.0, 10.0, 200.0)
+				//				new Parameter("Abatement Max Time", 50.0, 10.0, 200.0)
 				));
 	}
-	
+
 	public String getTitle() { return "DICE Model - Full Abatement Model - Optimized Emisison Path (Calibration)"; }
 
-	public void runCalculation() {
+	public void runCalculation(BooleanSupplier isCancelled) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
 
 		System.out.println("Calculation with Parameters: " + currentParameterSet);
@@ -72,14 +73,14 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 			private int iteration = 0;
 			@Override
 			public RandomVariable setValue(RandomVariable[] parameters) {
-				if(Thread.interrupted()) {
+				if(Thread.currentThread().isInterrupted()) {
 					this.stop();
 				}
-				
+
 				double[] abatementParameter = Arrays.stream(parameters).mapToDouble(RandomVariable::getAverage).map(x -> Math.exp(-Math.exp(-x))).toArray();
 				abatementParameter[0] = 0.03;
 				initialParameters = Arrays.stream(parameters).mapToDouble(RandomVariable::getAverage).toArray();
-				
+
 				/*
 				 * Create our abatement model
 				 */
@@ -102,7 +103,7 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 				roughness *= 0.1;
 
 				// Update the plot every 200 iterations
-				if(iteration%200 == 0) {
+				if(iteration%200 == 0 && !Thread.currentThread().isInterrupted()) {
 					String spec = "r = " + numberPercent2.format(discountRate) + "; value = " + numberDigit3.format(value);
 					plots.plot(climateModel, spec);
 					boolean showCost = (boolean)currentParameterSet.get("Show Cost");
@@ -121,6 +122,8 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 
 		optimizer.run();
 
+		System.out.println("Optimizer finished.");
+
 		// Get optimal value
 		final RandomVariable[] bestParameters = optimizer.getBestFitParameters();
 		double[] abatementParameter = Arrays.stream(bestParameters).mapToDouble(RandomVariable::getAverage).map(x -> Math.exp(-Math.exp(-x))).toArray();
@@ -136,21 +139,33 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 		 * Create the DICE model
 		 */
 		final ClimateModel climateModel = new DICEModel(timeDiscretization, abatementFunction, savingsRateFunction, discountRate);
-		
+
 		/*
 		 * Plots
 		 */
 
-		String spec = "r = " + numberPercent2.format(discountRate);		
+		if(!Thread.currentThread().isInterrupted() && !isCancelled.getAsBoolean()) {
+			synchronized(this) {
+			String spec = "r = " + numberPercent2.format(discountRate);		
+			plots.plot(climateModel, spec);
 
-		plots.plot(climateModel, spec);
-
-		boolean showCost = (boolean)currentParameterSet.get("Show Cost");
-		if(showCost) {
-			plots.plotCost(climateModel, discountRate, spec);
+			boolean showCost = (boolean)currentParameterSet.get("Show Cost");
+			if(showCost) {
+				plots.plotCost(climateModel, discountRate, spec);
+			}
+			else {
+				plots.closeCost();
+			}
+			}
 		}
-		else {
-			plots.closeCost();
+	}
+
+	@Override
+	protected void onClose() {
+		synchronized(this) {
+		super.onClose();
+
+		if(plots != null) plots.close();
 		}
 	}
 }

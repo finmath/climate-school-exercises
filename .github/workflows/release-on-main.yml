@@ -3,8 +3,8 @@ name: Build & Release (tag)
 on:
   push:
     tags:
-      - 'v*'                         # falls du Tag-Format v1.2.3 nutzt
-      - 'climate-school-exercises-*' # Maven Release Plugin Default: <artifactId>-<version>
+     - 'v*'                         # For tags with format v1.2.3 nutzt
+     - 'climate-school-exercises-*' # Maven Release Plugin Default: <artifactId>-<version>
 
 permissions:
   contents: write

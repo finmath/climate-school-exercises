@@ -6,13 +6,16 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import net.finmath.climateschool.ui.parameter.DoubleParameter;
 import net.finmath.climateschool.utilities.ModelFactory;
 import net.finmath.climateschool.utilities.RandomOperators;
+import net.finmath.climateschool.ui.parameter.DoubleParameter;
 import net.finmath.montecarlo.interestrate.TermStructureMonteCarloSimulationModel;
 import net.finmath.plots.DoubleToRandomVariableFunction;
 import net.finmath.plots.GraphStyle;
@@ -22,6 +25,7 @@ import net.finmath.plots.PlotablePoints2D;
 import net.finmath.plots.Point2D;
 import net.finmath.stochastic.RandomOperator;
 import net.finmath.stochastic.RandomVariable;
+import net.finmath.stochastic.Scalar;
 import net.finmath.time.TimeDiscretization;
 import net.finmath.time.TimeDiscretizationFromArray;
 
@@ -43,25 +47,25 @@ public class InterestRatesHullWhiteSimulationPathOfShortRate extends ExperimentU
 				new DoubleParameter("Volatility", 0.001, 0.0001, 0.005)
 				));
 	}
-	
+
 
 	public String getTitle() { return "Hull White Model - Simulation of Interest Rate (Short Rate)"; }
 
-	public void runCalculation() {
+	public void runCalculation(BooleanSupplier isCancelled) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
 
 		System.out.println("Calculation with Parameters: " + currentParameterSet);
 
-		double timeHorizon = 150.0;
 		double shortRateInitialValue = (Double)currentParameterSet.get("Initial Value");
 		double shortRateLongTermValue = (Double)currentParameterSet.get("Long Term Value");
 		double shortRateMeanreversion = (Double)currentParameterSet.get("Mean Reversion Speed");
 		double shortRateVolatility = (Double)currentParameterSet.get("Volatility");
-		
+
 		/*
 		 * Create a time discretization
 		 */
-		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, (int)timeHorizon, 1.0);
+		final int numberOfTimeSteps = (int) Math.ceil(timeHorizon/timeStep);
+		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimeSteps, timeStep);
 		final TermStructureMonteCarloSimulationModel interestRateModel = ModelFactory.getInterestRateModel(
 				timeDiscretization,
 				timeDiscretization,
@@ -70,7 +74,6 @@ public class InterestRatesHullWhiteSimulationPathOfShortRate extends ExperimentU
 
 		final DoubleToRandomVariableFunction numeraire = t -> interestRateModel.getNumeraire(Math.min(t, 500));
 		final DoubleToRandomVariableFunction shortRate = t -> numeraire.apply(t+1).div(numeraire.apply(t)).log();
-		//		final DoubleToRandomVariableFunction shortRate = t-> interestRateModel.getProcess().getProcessValue((int) t, 0);
 		final Function<Double, DoubleUnaryOperator> rateAtQuantile = q -> {
 			return t -> {
 				try {
@@ -104,34 +107,44 @@ public class InterestRatesHullWhiteSimulationPathOfShortRate extends ExperimentU
 			try {
 				valueSlices.add(shortRate.apply(time));
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				valueSlices.add(Scalar.of(Double.NaN));
 			}
 		}
 
 		List<Plotable2D> plotables = new ArrayList<Plotable2D>();
-			for(int i=0; i<numberOfPathsToShow; i++) {
+		for(int i=0; i<numberOfPathsToShow; i++) {
 			final List<Point2D> series = new ArrayList<Point2D>();
 			for(int j=0; j<timeDiscretization.getNumberOfTimes()-1; j++) {
 				double time = timeDiscretization.getTime(j);
-				try {
-					series.add(new Point2D(time, valueSlices.get(j).get(i)));
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				series.add(new Point2D(time, valueSlices.get(j).get(i)));
 			}
 			plotables.add(new PlotablePoints2D("Scatter", series, new GraphStyle(new Rectangle(dotSize, dotSize), new BasicStroke(), null)));
 		}
-		
-		if(plot == null) {
-			plot = new Plot2D(plotables);
-			plot.setTitle("Short Rate (" + titleSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Short Rate (r)");
-			plot.setYRange(-0.02, 0.10);
-			plot.show();
+
+		synchronized(this) {
+			if(!Thread.currentThread().isInterrupted() && !isCancelled.getAsBoolean()) {
+				if(plot == null) {
+					plot = new Plot2D(plotables);
+					plot.setTitle("Short Rate (" + titleSpec + ")").setXAxisLabel("time (years)").setYAxisLabel("Short Rate (r)");
+					plot.setYRange(-0.02, 0.10);
+					plot.show();
+				}
+				else {
+					plot.update(plotables);
+				}
+			}
 		}
-		else {
-			plot.update(plotables);
+	}
+
+	@Override
+	protected void onClose() {
+		synchronized (this) {
+			super.onClose();
+			System.out.println("Closing plot");
+			if(plot != null) {
+				plot.close();
+				plot = null;
+			}
 		}
 	}
 }

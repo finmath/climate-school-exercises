@@ -8,22 +8,48 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<src.main.java.dir>src/main/java</src.main.java.dir>
+		<src.test.java.dir>src/test/java</src.test.java.dir>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
-		<compiler-plugin.version>3.8.1</compiler-plugin.version>
 
 		<junit.version>5.6.2</junit.version>
 		<finmath-lib.version>6.0.22</finmath-lib.version>
-		<finmath-plot.version>0.5.6</finmath-plot.version>
+		<finmath-plot.version>0.5.7</finmath-plot.version>
 
 		<!-- JavaFX -->
 		<javafx.version>21.0.5</javafx.version>
 		<!-- Fallback - overwrite by profile -->
 		<javafx.platform>mac-aarch64</javafx.platform>
 
+		<!-- maven plugins -->
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<maven.source-plugin.version>3.2.1</maven.source-plugin.version>
 		<maven.javadoc-plugin.version>3.3.2</maven.javadoc-plugin.version>
 	</properties>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>finmath.net</name>
+		<url>http://finmath.net</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>fries</id>
+			<name>Christian Fries</name>
+			<email>email@christian-fries.de</email>
+			<url>http://www.christian-fries.de</url>
+			<timezone>1</timezone>
+		</developer>
+	</developers>
 
 	<dependencies>
 		<!-- libs -->
@@ -113,16 +139,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${compiler-plugin.version}</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
 					<compilerVersion>${maven.compiler.source}</compilerVersion>
 				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
 			</plugin>
 
 			<!-- Start via exec:java -->
@@ -145,7 +167,12 @@
 				</configuration>
 			</plugin>
 
-			<!-- Dependencies für jpackage in target/ bereitstellen -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+			</plugin>
+
+			<!-- Dependencies for jpackage in target/ -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>

@@ -114,6 +114,7 @@ jobs:
 
       - name: Build unsigned package with Maven (skip tests)
         if: runner.os != 'macOS'
+        shell: bash
         run: >-
           mvn -B -DskipTests
           -Djpackage.app.version="$JPACKAGE_APP_VERSION"

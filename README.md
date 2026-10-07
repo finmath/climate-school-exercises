@@ -52,15 +52,20 @@ on the [Climate School Exercises Releases Page](https://github.com/finmath/clima
 - You will be asked twice to confirm the installation, because the file is not signed.
 - You now find the programm in `C:\Program Files\Climate School Exercises`. Open this folder an double click `Climate School Exercises.exe`.
 
-### Installation and Running on MacOS
+### Installation and Running on macOS
 
-- Download the .dmg file from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest)
+- Download the `.dmg` file from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
 - Open the downloaded .dmg file (double click on the downloaded .dmg file).
-- Optional: Move the  `Climate School Exercises` program to the application folder and open the application folder.
-- Right-Click on the `Climate School Exercises` program an select open (double-click to open does not work here, because the file is not signed)
-- You will be asked to confirm to open the file, because the file is not signed
+- Move `Climate School Exercises` to the Applications folder and open it.
+- Confirm the standard first-launch prompt for an application downloaded from the Internet.
 
-<p align="center"><img src="doc/images/macos-context-menu-open.png" alt="isolated" width="200"/></p>
+If macOS blocks an older unsigned release, first try to open the application once. Then open **System Settings → Privacy & Security**, scroll to the Security section, click **Open Anyway**, authenticate, and confirm. The button is available for about one hour after the failed launch. On macOS 14 or older, Control-clicking the application and selecting **Open** may also work; macOS 15 and newer require the Privacy & Security route.
+
+Only override this protection for a release downloaded from this repository. Do not override a warning that says the application will damage your computer.
+
+### Signing macOS Releases (Maintainers)
+
+Tagged releases use Developer ID signing and Apple notarization. The one-time Apple and GitHub setup is documented in [doc/macos-code-signing.md](doc/macos-code-signing.md).
 
 ------
 

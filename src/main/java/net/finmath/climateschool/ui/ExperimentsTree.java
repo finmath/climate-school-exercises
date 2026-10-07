@@ -1,5 +1,4 @@
 package net.finmath.climateschool.ui;
-
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,7 +37,7 @@ public class ExperimentsTree extends Application {
 	 */
 	class ExperimentApplication {
 
-		private static final int maxCacheDepth = 9;
+		private static final int maxCacheDepth = 6;
 
 		/**
 		 * LRU-Cache (accessOrder=true)
@@ -132,12 +131,14 @@ public class ExperimentsTree extends Application {
 	 * MODEL of experiments
 	 */
 	private final Map<String, Object> model = mapOf(
+			"Info", (Supplier<Parent>) () -> getInfo(),
+//			"DICE Model (Climate School)", mapOf(
+//					//,
+//					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
+//					),
 			"DICE Model (Climate School)", mapOf(
-					"Info", (Supplier<Parent>) () -> getInfo(),
-					"One Parametric Abatement Model",
-					new ExperimentApplication(() -> new DICEAbatementTimeExperimentUI(), 1),
-					"One Parametric Abatement Model, Calibrated",
-					new ExperimentApplication(() -> new DICECalibrationOneParameterExperimentUI(), 1),
+					"One Parametric Abatement Model", new ExperimentApplication(() -> new DICEAbatementTimeExperimentUI(), 1),
+					"One Parametric Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationOneParameterExperimentUI(), 1),
 					"Full Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationExperimentUI(), 1)
 					//,
 					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
@@ -151,7 +152,7 @@ public class ExperimentsTree extends Application {
 	private Parent getInfo() {
 		VBox box = new VBox(
 				new Label("Collection of Parameter Experiments based on Models from finmath lib"),
-				new Label("Version 2025-10-09"),
+				new Label("Version 2025-10-12"),
 				new Label("Select a topic on the left; set the parameters or select calculate.")
 				);
 		box.setAlignment(Pos.CENTER);
@@ -223,7 +224,7 @@ public class ExperimentsTree extends Application {
 
 		root.setCenter(splitPane);
 
-		Scene scene = new Scene(root, 1024, 520);
+		Scene scene = new Scene(root, 1200, 675);
 		stage.setScene(scene);
 		stage.setTitle("finmath Numerical Experiments");
 

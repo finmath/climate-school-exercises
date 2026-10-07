@@ -104,8 +104,6 @@ public class DICEModelPlots {
 	}
 
 	public void plotCost(ClimateModel climateModel, double discountRate, String paramSpec) {
-		System.out.println("Generating plots for " + climateModel);
-
 		final double timeHorizonInPlot = 400;
 
 		final TimeDiscretization timeDiscretization = climateModel.getTimeDiscretization();
@@ -213,38 +211,31 @@ public class DICEModelPlots {
 		}
 	}
 
+	private static void closePlot(Plot2D plot) {
+		if(plot != null) plot.close();
+	}
+
 	public void close() {
-		
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-		Consumer<Plot2D> close = p -> { if(p != null) p.close(); };
-		
-		close.accept(plotTemperature);
-		close.accept(plotCarbon);
-		close.accept(plotEmission);
-		close.accept(plotOutput);
-		close.accept(plotAbatement);
+		closePlot(plotTemperature);
+		closePlot(plotCarbon);
+		closePlot(plotEmission);
+		closePlot(plotOutput);
+		closePlot(plotAbatement);
 
 		plotTemperature = null;
 		plotCarbon = null;
 		plotEmission = null;
 		plotOutput = null;
 		plotAbatement = null;
-		
-		closeCost();
-			}});
 
+		closeCost();
 	}
 
 	public void closeCost() {
-		if(plotCostDiscounted != null) {
-			plotCostDiscounted.close();
-			plotCostDiscounted = null;
-		}
-		if(plotCostPerGDP != null) {
-			plotCostPerGDP.close();
-			plotCostPerGDP = null;
-		}
+		closePlot(plotCostDiscounted);
+		plotCostDiscounted = null;
+
+		closePlot(plotCostPerGDP);
+		plotCostPerGDP = null;
 	}
 }

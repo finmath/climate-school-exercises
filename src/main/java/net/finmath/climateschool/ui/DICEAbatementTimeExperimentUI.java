@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleConsumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 
 	public String getTitle() { return "DICE Model - One Parametric Abatement Model - NOT CALIBRATED"; }
 
-	public void runCalculation(BooleanSupplier isCancelled) {
+	public void runCalculation(BooleanSupplier isCancelled, DoubleConsumer progress) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
 
 		System.out.println("Calculation with Parameters: " + currentParameterSet);

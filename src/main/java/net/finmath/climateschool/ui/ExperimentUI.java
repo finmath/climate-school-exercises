@@ -2,15 +2,12 @@ package net.finmath.climateschool.ui;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.DoubleConsumer;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -25,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -56,6 +54,7 @@ public abstract class ExperimentUI extends Application {
 	private final AtomicLong currentEpoch = new AtomicLong(0);
 
 	private final PauseTransition debounce = new PauseTransition(Duration.millis(300));
+	private final ProgressBar progressIndicator = new ProgressBar();
 	private final DecimalFormat df = new DecimalFormat("#.####");
 
 	private Parent content;
@@ -69,7 +68,7 @@ public abstract class ExperimentUI extends Application {
 	 */
 	abstract public String getTitle();
 
-	abstract public void runCalculation(BooleanSupplier isCancelled);
+	abstract public void runCalculation(BooleanSupplier isCancelled, DoubleConsumer progress);
 
 	protected void onClose() {
 		debounce.stop();
@@ -81,8 +80,6 @@ public abstract class ExperimentUI extends Application {
 	}
 
 	public void runCalculationAsync() {
-		System.out.println("Starting calculation.");
-
 		long taskEpoch = currentEpoch.incrementAndGet();
 		
 		// cancel running calculation
@@ -93,14 +90,23 @@ public abstract class ExperimentUI extends Application {
 
 		BooleanSupplier isCancelled = () -> taskEpoch < currentEpoch.get();
 		
-		Task<Double> task = new Task<>() {
+		Task<Void> task = new Task<>() {
 			@Override
-			protected Double call() throws Exception {
-				runCalculation(isCancelled);
-				return 0.0;
+			protected Void call() throws Exception {
+				updateProgress(-1, 1);
+				DoubleConsumer process = p -> { if(taskEpoch == currentEpoch.get()) this.updateProgress(p, 1.0); };				
+				runCalculation(isCancelled, process);
+				updateProgress(1.0, 1.0);
+				return null;
 			}
 		};
 
+		// Bind the progressIndicator to this task
+		progressIndicator.progressProperty().unbind();
+		progressIndicator.visibleProperty().unbind();
+		progressIndicator.visibleProperty().bind(task.runningProperty());
+		progressIndicator.progressProperty().bind(task.progressProperty());
+		
 		currentJob = pool.submit(task);
 	}
 
@@ -156,15 +162,21 @@ public abstract class ExperimentUI extends Application {
 		debounce.setOnFinished(e -> runCalculationAsync());
 
 		// Buttons
-		HBox buttons = new HBox(10);
-		Button btnReset = new Button("Reset");
-		btnReset.setOnAction(e -> resetToDefaults());
-		Button btnCompute = new Button("Calculate");
-		btnCompute.setOnAction(e -> runCalculationAsync());
-		buttons.getChildren().addAll(btnReset, btnCompute);
-		buttons.setAlignment(Pos.CENTER_LEFT);
+		Button buttonRest = new Button("Reset");
+		buttonRest.setOnAction(e -> resetToDefaults());
+		Button buttonCalculate = new Button("Calculate");
+		buttonCalculate.setOnAction(e -> runCalculationAsync());
 
-		VBox vbox = new VBox(12, grid, buttons);
+		// Progress Indicator
+		if(progressIndicator.visibleProperty().isBound()) progressIndicator.visibleProperty().unbind();
+		progressIndicator.setVisible(false);
+		
+		// Controls
+		HBox controls = new HBox(10);
+		controls.getChildren().addAll(buttonRest, buttonCalculate, progressIndicator);
+		controls.setAlignment(Pos.CENTER_LEFT);
+		
+		VBox vbox = new VBox(12, grid, controls);
 		vbox.setPadding(new Insets(14));
 
 		TitledPane content = new TitledPane(getTitle(), vbox);
@@ -172,6 +184,7 @@ public abstract class ExperimentUI extends Application {
 		content.setAnimated(false);
 		content.setMaxWidth(Double.MAX_VALUE);
 
+		this.content = content;
 		return content;
 	}
 
@@ -232,7 +245,7 @@ public abstract class ExperimentUI extends Application {
 			sliderBox.setAlignment(Pos.CENTER_LEFT);
 
 			// constrain Labels
-			Label constrainLabel = new Label("in (" + df.format(lo) + "," + df.format(hi)+ ")");
+			Label constrainLabel = new Label("∊ (" + df.format(lo) + "," + df.format(hi)+ ")");
 
 			// Bidirektionales Binding (mit robuster Konvertierung)
 			StringConverter<Number> conv = new NumberStringConverter(df);

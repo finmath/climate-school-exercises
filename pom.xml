@@ -14,6 +14,7 @@
 		<src.test.java.dir>src/test/java</src.test.java.dir>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
+		<jpackage.app.version>${project.version}</jpackage.app.version>
 
 		<junit.version>5.6.2</junit.version>
 		<finmath-lib.version>6.0.22</finmath-lib.version>
@@ -202,7 +203,7 @@
 				<!-- top level config (if called via mvn jpackage:jpackage -->
 				<configuration>
 					<name>${project.name}</name>
-					<appVersion>${project.version}</appVersion>
+					<appVersion>${jpackage.app.version}</appVersion>
 					<input>${project.build.directory}</input>
 					<mainJar>${project.build.finalName}.jar</mainJar>
 					<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
@@ -220,7 +221,7 @@
 						</goals>
 						<configuration>
 							<name>${project.name}</name>
-							<appVersion>${project.version}</appVersion>
+							<appVersion>${jpackage.app.version}</appVersion>
 							<input>${project.build.directory}</input>
 							<mainJar>${project.build.finalName}.jar</mainJar>
 							<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
@@ -277,6 +278,57 @@
 				<javafx.platform>mac</javafx.platform>
 				<pack.type>DMG</pack.type>
 			</properties>
+		</profile>
+
+		<!--
+			Opt-in signing for release builds. The GitHub Actions release workflow
+			imports a Developer ID Application identity into a temporary keychain
+			and activates this profile only for the macOS build.
+		-->
+		<profile>
+			<id>mac-sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>prepare-macos-dependencies-for-notarization</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<exec executable="/bin/bash" failonerror="true">
+											<arg value="${project.basedir}/scripts/prepare-macos-dependencies.sh" />
+											<arg value="${project.build.directory}" />
+										</exec>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.panteleyev</groupId>
+						<artifactId>jpackage-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>make-installer</id>
+								<configuration>
+									<macSign>true</macSign>
+									<macPackageIdentifier>net.finmath.climateschool.exercises</macPackageIdentifier>
+									<macPackageSigningPrefix>net.finmath.climateschool.exercises.</macPackageSigningPrefix>
+									<macSigningKeyUserName>${env.MACOS_SIGNING_USER}</macSigningKeyUserName>
+									<macSigningKeychain>${env.MACOS_SIGNING_KEYCHAIN}</macSigningKeychain>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 
 		<profile>

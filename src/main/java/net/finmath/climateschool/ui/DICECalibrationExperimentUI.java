@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleConsumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 
 	public String getTitle() { return "DICE Model - Full Abatement Model - Optimized Emisison Path (Calibration)"; }
 
-	public void runCalculation(BooleanSupplier isCancelled) {
+	public void runCalculation(BooleanSupplier isCancelled, DoubleConsumer progress) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
 
 		System.out.println("Calculation with Parameters: " + currentParameterSet);
@@ -69,6 +70,8 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 			Arrays.fill(initialParameters, -Math.log(-Math.log(0.8)));
 		}
 
+		final int maxIterations = 500;
+		
 		final AdamOptimizerUsingFiniteDifferences optimizer = new AdamOptimizerUsingFiniteDifferences(initialParameters, 800, 0.05, GradientMethod.AVERAGE) {
 			private int iteration = 0;
 			@Override
@@ -113,6 +116,8 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 					else {
 						plots.closeCost();
 					}
+					
+					progress.accept((double)getIteration()/maxIterations);
 				}
 				iteration++;
 

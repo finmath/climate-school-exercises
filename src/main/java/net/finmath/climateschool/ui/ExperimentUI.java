@@ -299,19 +299,23 @@ public abstract class ExperimentUI extends Application {
 		return row + 1;
 	}
 
-	/** Setzt alle Werte auf die ursprünglich übergebenen Startwerte (geklammert auf min/max). */
+	/** Resets all parameters to their initial values (clamped to the configured range). */
 	private void resetToDefaults() {
 		for (Parameter parameter : parameters) {
-			if(parameter instanceof DoubleParameter p) {
-				double lo = Math.min(p.getSpec().min(), p.getSpec().max());
-				double hi = Math.max(p.getSpec().min(), p.getSpec().max());
-				double value = clamp(p.getSpec().initial(), lo, hi);
-				p.getBindableValue().set(value);
-			}
-			else if(parameter instanceof BooleanParameter p) {
-				p.getBindableValue().set(p.getSpec().initial());
-			}
-			debounce.playFromStart();
+			resetParameter(parameter);
+		}
+		debounce.playFromStart();
+	}
+
+	static void resetParameter(Parameter parameter) {
+		if(parameter instanceof DoubleParameter p) {
+			double lo = Math.min(p.getSpec().min(), p.getSpec().max());
+			double hi = Math.max(p.getSpec().min(), p.getSpec().max());
+			double value = clamp(p.getSpec().initial(), lo, hi);
+			p.getBindableValue().set(value);
+		}
+		else if(parameter instanceof BooleanParameter p) {
+			p.getBindableValue().set(p.getSpec().initial());
 		}
 	}
 

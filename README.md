@@ -43,7 +43,15 @@ We provide a binary version of the experiments for
 
 on the [Climate School Exercises Releases Page](https://github.com/finmath/climate-school-exercises/releases/latest).
 
-<p align="center"><img src="doc/images/finmath-climate-school-experiments.png" alt="" height="300"/></p>
+<p align="center">
+  <img src="doc/images/finmath-climate-school-experiments.png" alt="Climate School Exercises interface with DICE model controls" height="300"/>
+</p>
+<p align="center"><em>Choose an experiment and configure its parameters.</em></p>
+
+<p align="center">
+  <img src="doc/images/finmath-climate-school-experiments-screenshot.png" alt="Climate School Exercises showing DICE model charts for abatement, emissions, carbon concentration, temperature, GDP, and discounted cost" width="900"/>
+</p>
+<p align="center"><em>Example output from the full-abatement experiment.</em></p>
 
 ### Installation and Running on Windows
 
@@ -58,10 +66,6 @@ on the [Climate School Exercises Releases Page](https://github.com/finmath/clima
 - Open the downloaded `.dmg` file (double-click the file).
 - Move `Climate School Exercises` to the Applications folder and open it.
 - Confirm the standard first-launch prompt for an application downloaded from the Internet.
-
-If macOS blocks an older unsigned release, first try to open the application once. Then open **System Settings → Privacy & Security**, scroll to the Security section, click **Open Anyway**, authenticate, and confirm. The button is available for about one hour after the failed launch. On macOS 14 or older, Control-clicking the application and selecting **Open** may also work; macOS 15 and newer require the Privacy & Security route.
-
-Only override this protection for a release downloaded from this repository. Do not override a warning that says the application will damage your computer.
 
 ### Signing macOS Releases (Maintainers)
 

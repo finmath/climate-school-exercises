@@ -195,7 +195,7 @@
 
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
+				<version>3.5.4</version>
 			</plugin>
 
 			<!-- Runtime dependencies for the isolated jpackage input directory. -->

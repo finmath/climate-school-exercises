@@ -27,7 +27,7 @@ replay_pid*
 /.classpath
 /.project
 
-# macos
+# macOS
 .DS_Store
 /pom.xml.releaseBackup
 /release.properties

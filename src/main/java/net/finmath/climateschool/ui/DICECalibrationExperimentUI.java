@@ -41,7 +41,7 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 				));
 	}
 
-	public String getTitle() { return "DICE Model - Full Abatement Model - Optimized Emisison Path (Calibration)"; }
+	public String getTitle() { return "DICE Model - Full Abatement Model - Optimized Emission Path (Calibration)"; }
 
 	public void runCalculation(BooleanSupplier isCancelled, DoubleConsumer progress) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
@@ -96,7 +96,7 @@ public class DICECalibrationExperimentUI extends ExperimentUI {
 
 				final double value = climateModel.getValue().expectation().doubleValue();
 
-				// Penalty for non-smoothness - it works without this, but this helps the optimizer to avoid onszillations (that are la
+				// Penalty for non-smoothness—it works without this, but it helps the optimizer avoid oscillations.
 				double roughness = 0.0;
 				for(int i=1; i<abatementParameter.length-2; i++) {
 					roughness += Math.pow(abatementParameter[i+1] - abatementParameter[i], 2.0);

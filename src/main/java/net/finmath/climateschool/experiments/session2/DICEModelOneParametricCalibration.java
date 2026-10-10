@@ -16,7 +16,7 @@ import net.finmath.time.TimeDiscretizationFromArray;
 /**
  * Experiment related to the DICE model.
  * 
- * Calibrates a one parametric abatement function for a model with given values of the discount rate.
+ * Calibrates a one-parameter abatement function for a model with a given discount rate.
  * 
  * Plots the optimal abatement function.
  * 
@@ -56,9 +56,9 @@ public class DICEModelOneParametricCalibration {
 		/*
 		 * Search for the optimal value of abatementMaxTime
 		 */
-		double searchIntervallLowerBound = 10.0;
-		double searchIntervallUpperBound = 300.0;		
-		GoldenSectionSearch optimizer = new GoldenSectionSearch(searchIntervallLowerBound, searchIntervallUpperBound);
+		double searchIntervalLowerBound = 10.0;
+		double searchIntervalUpperBound = 300.0;
+		GoldenSectionSearch optimizer = new GoldenSectionSearch(searchIntervalLowerBound, searchIntervalUpperBound);
 		while(optimizer.getAccuracy() > 1E-11 && !optimizer.isDone()) {
 
 			final double abatementMaxTime = optimizer.getNextPoint();	// Free parameter
@@ -77,7 +77,7 @@ public class DICEModelOneParametricCalibration {
 
 			System.out.println(String.format("Time: %5.2f \t Value: %10.3f", abatementMaxTime, value));
 			
-			// Note: The GoldenSectionSearch optimizer is a minimizer. But we like to maximize the value. Hence we pass -value to the optimzer.
+			// Note: The GoldenSectionSearch optimizer is a minimizer. But we would like to maximize the value. Hence, we pass -value to the optimizer.
 			optimizer.setValue(-value);
 		}
 		
@@ -112,7 +112,7 @@ public class DICEModelOneParametricCalibration {
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getGDP()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-		.setTitle("Output (T =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel(" Output [Tr$2005]").show();
+		.setTitle("Output (T = " + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Output [Tr$2005]").show();
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getAbatement()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)

@@ -36,7 +36,7 @@ public class DICECalibrationOneParameterExperimentUI extends ExperimentUI {
 	}
 
 
-	public String getTitle() { return "DICE Model - One Parametric Abatement Model - Optimized Emisison Path (Calibration)"; }
+	public String getTitle() { return "DICE Model - One-Parameter Abatement Model - Optimized Emission Path (Calibration)"; }
 
 	public void runCalculation(BooleanSupplier isCancelled, DoubleConsumer progress) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
@@ -69,9 +69,9 @@ public class DICECalibrationOneParameterExperimentUI extends ExperimentUI {
 		/*
 		 * Search for the optimal value of abatementMaxTime
 		 */
-		double searchIntervallLowerBound = 10.0;
-		double searchIntervallUpperBound = 300.0;		
-		GoldenSectionSearch optimizer = new GoldenSectionSearch(searchIntervallLowerBound, searchIntervallUpperBound);
+		double searchIntervalLowerBound = 10.0;
+		double searchIntervalUpperBound = 300.0;
+		GoldenSectionSearch optimizer = new GoldenSectionSearch(searchIntervalLowerBound, searchIntervalUpperBound);
 		while(optimizer.getAccuracy() > 1E-5 && !optimizer.isDone()) {
 
 			final double abatementMaxTime = optimizer.getNextPoint();	// Free parameter
@@ -90,7 +90,7 @@ public class DICECalibrationOneParameterExperimentUI extends ExperimentUI {
 
 			System.out.println(String.format("Time: %5.2f \t Value: %10.3f", abatementMaxTime, value));
 
-			// Note: The GoldenSectionSearch optimizer is a minimizer. But we like to maximize the value. Hence we pass -value to the optimzer.
+			// Note: The GoldenSectionSearch optimizer is a minimizer. But we would like to maximize the value. Hence, we pass -value to the optimizer.
 			optimizer.setValue(-value);
 		}
 
@@ -98,7 +98,7 @@ public class DICECalibrationOneParameterExperimentUI extends ExperimentUI {
 		final double abatementMaxTime = optimizer.getBestPoint();
 
 		/*
-		 * Create our abatement model: it is a piecewise linear funtion: starting in abatementInitial, then reaching abatementMax in abatementMaxTime years, then staying at abatementMax.
+		 * Create our abatement model: it is a piecewise-linear function, starting at abatementInitial, reaching abatementMax after abatementMaxTime years, and then staying at abatementMax.
 		 */
 		final UnaryOperator<Double> abatementFunction = time -> Math.min(abatementInitial + (abatementMax-abatementInitial)/abatementMaxTime * time, abatementMax);
 
@@ -112,7 +112,7 @@ public class DICECalibrationOneParameterExperimentUI extends ExperimentUI {
 		 */
 
 		if(!Thread.currentThread().isInterrupted() && !isCancelled.getAsBoolean()) {
-			String spec = "T(\u03BC=1) =" + numberDigit3.format(abatementMaxTime) + ", r = " + numberPercent2.format(discountRate);		
+			String spec = "T(\u03BC=1) = " + numberDigit3.format(abatementMaxTime) + ", r = " + numberPercent2.format(discountRate);
 
 			plots.plot(climateModel, spec);
 

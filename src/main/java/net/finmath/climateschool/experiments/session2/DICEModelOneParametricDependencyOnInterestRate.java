@@ -39,7 +39,7 @@ public class DICEModelOneParametricDependencyOnInterestRate {
 
 		Plots
 		.createScatter(discountRates, timeToReachMaxAbatement, 0, 300, 3)
-		.setTitle("Time to Reach Maximium Abatement (T(\u03BC=1) in the One Parametric Model")
+		.setTitle("Time to Reach Maximum Abatement (T(\u03BC=1) in the One-Parameter Model)")
 		.setXAxisLabel("rate (r)").setXAxisNumberFormat(new DecimalFormat("0.0%")).setYAxisLabel("T(\u03BC=1)").show();
 
 		System.out.println("_".repeat(79));

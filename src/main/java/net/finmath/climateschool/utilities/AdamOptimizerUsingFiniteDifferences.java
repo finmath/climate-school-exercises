@@ -16,7 +16,7 @@ import net.finmath.stochastic.RandomVariable;
  * The gradient is calculated using finite differences.
  *
  * @author Maximilian Singhof
- * @author Chritian Fries
+ * @author Christian Fries
  */
 public abstract class AdamOptimizerUsingFiniteDifferences {
 
@@ -34,7 +34,7 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 	private final double eps ;
 	private final double[] betas ;
 
-	private boolean runnning = false;
+	private boolean running = false;
 	private int iteration;
 	
 	private final RandomVariableDifferentiable[] parameters ;
@@ -89,12 +89,12 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 	public abstract RandomVariable setValue(RandomVariable[] parameters) ;
 
 	public void run() {
-		runnning = true;
+		running = true;
 		if (gradientMethod != GradientMethod.COMPLETE) {
 			final double[] m = new double[parameters.length];
 			final double[] v = new double[parameters.length];
 
-			for(iteration=0; iteration<iterations && runnning; iteration++) {
+			for(iteration=0; iteration<iterations && running; iteration++) {
 				final RandomVariable value = setValue(parameters);
 				if (value.getAverage() < bestValue || bestFitParameters == null) {
 					bestValue = value.getAverage();
@@ -142,7 +142,7 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 				v[i] = randomVariableFactory.createRandomVariable(0);
 			}
 
-			for(iteration=0; iteration<iterations && runnning; iteration++) {
+			for(iteration=0; iteration<iterations && running; iteration++) {
 				final RandomVariable value = setValue(parameters);
 				if (value.getAverage() < bestValue || bestFitParameters == null) {
 					bestValue = value.getAverage();
@@ -178,7 +178,7 @@ public abstract class AdamOptimizerUsingFiniteDifferences {
 	}
 	
 	public void stop() {
-		runnning = false;
+		running = false;
 	}
 
 	public RandomVariableDifferentiable[] getBestFitParameters() {

@@ -16,7 +16,7 @@ import net.finmath.time.TimeDiscretizationFromArray;
 /*
  * Experiment related to the DICE model.
  * 
- * Note: The code makes some small simplification: it uses a constant savings rate and a constant external forcings.
+ * Note: The code makes some small simplifications: it uses a constant savings rate and constant external forcing.
  * It may still be useful for illustration.
  */
 public class DICEModelExperiment {
@@ -48,29 +48,29 @@ public class DICEModelExperiment {
 			final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimeSteps, timeStep);
 			final ClimateModel climateModel = new DICEModel(timeDiscretization, abatementFunction, t -> 0.26, discountRate);
 
-			System.out.println("Abatement 100% at time + " + abatementMaxTime);
+			System.out.println("Abatement 100% at time = " + abatementMaxTime);
 			System.out.println(String.format("\t %8.4f \t %8.4f \t %8.4f \t %8.4f", abatementMaxTime, climateModel.getTemperature()[numberOfTimeSteps-1].getExpectedTemperatureOfAtmosphere(), climateModel.getEmission()[numberOfTimeSteps-1].getAverage(), climateModel.getValue().getAverage()));
 
 
 			Plots
 			.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getTemperature()).mapToDouble(Temperature::getExpectedTemperatureOfAtmosphere).toArray(), 0, 300, 3)
-			.setTitle("Temperature (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]").show();
+			.setTitle("Temperature (T(\u03BC=1) = " + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]").show();
 
 			Plots
 			.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getCarbonConcentration()).mapToDouble(CarbonConcentration::getExpectedCarbonConcentrationInAtmosphere).toArray(), 0, 300, 3)
-			.setTitle("Carbon Concentration (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]").show();
+			.setTitle("Carbon Concentration (T(\u03BC=1) = " + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]").show();
 
 			Plots
 			.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getEmission()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-			.setTitle("Emission (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]").show();
+			.setTitle("Emission (T(\u03BC=1) = " + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]").show();
 
 			Plots
 			.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getGDP()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-			.setTitle("Output (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel(" Output [Tr$2005]").show();
+			.setTitle("Output (T(\u03BC=1) = " + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Output [Tr$2005]").show();
 
 			Plots
 			.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getAbatement()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-			.setTitle("Abatement (T(\u03BC=1) =" + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc").show();
+			.setTitle("Abatement (T(\u03BC=1) = " + abatementMaxTime + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Abatement \u03bc").show();
 		}
 
 		System.out.println("_".repeat(79));

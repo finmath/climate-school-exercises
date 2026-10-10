@@ -22,7 +22,7 @@
 
 		<!-- JavaFX -->
 		<javafx.version>21.0.5</javafx.version>
-		<!-- Fallback - overwrite by profile -->
+		<!-- Fallback—overridden by an OS profile -->
 		<javafx.platform>mac-aarch64</javafx.platform>
 
 		<!-- maven plugins -->
@@ -200,7 +200,7 @@
 				<groupId>org.panteleyev</groupId>
 				<artifactId>jpackage-maven-plugin</artifactId>
 				<version>1.7.1</version>
-				<!-- top level config (if called via mvn jpackage:jpackage -->
+				<!-- Top-level config (if called via mvn jpackage:jpackage) -->
 				<configuration>
 					<name>${project.name}</name>
 					<appVersion>${jpackage.app.version}</appVersion>

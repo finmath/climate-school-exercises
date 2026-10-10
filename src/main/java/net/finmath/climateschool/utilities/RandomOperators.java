@@ -22,11 +22,11 @@ public class RandomOperators {
 	}
 
 	/**
-	 * X &mapsto; ES_\alpha(X) where ES_\alpha(X) = E(X \cdot 1(x \leq VaR_\alpha(X)) / \alpha
+	 * X &mapsto; ES_\alpha(X) where ES_\alpha(X) = E(X \cdot 1(x \leq VaR_\alpha(X)) / \alpha)
 	 *
 	 * This is the same as <code>leftTailExpectedShortFall</code>.
 	 *
-	 * @param percentageLevel the percentage \alpha level of the expected short fall.
+	 * @param percentageLevel the percentage \alpha level of the expected shortfall.
 	 * @return The operator X &mapsto; ES_\alpha(X)
 	 */
 	public static RandomOperator expectedShortFall(Double percentageLevel) {
@@ -34,11 +34,11 @@ public class RandomOperators {
 	}
 
 	/**
-	 * ES_\alpha(X) = E(X \cdot 1(x \leq VaR_\alpha(X)) / \alpha
+	 * ES_\alpha(X) = E(X \cdot 1(x \leq VaR_\alpha(X)) / \alpha)
 	 *
 	 * This is the same as <code>leftTailExpectedShortFall</code>.
 	 *
-	 * @param percentageLevel the percentage \alpha level of the expected short fall.
+	 * @param percentageLevel the percentage \alpha level of the expected shortfall.
 	 * @return ES_\alpha(X)
 	 */
 	public static RandomVariable expectedShortFall(RandomVariable x, Double percentageLevel) {
@@ -48,7 +48,7 @@ public class RandomOperators {
 	/**
 	 * X &mapsto; E(X) - alpha ES_\alpha(X)
 	 *
-	 * @param percentageLevel the percentage \alpha level of the expected short fall.
+	 * @param percentageLevel the percentage \alpha level of the expected shortfall.
 	 * @return The E(X) - alpha ES_\alpha(X)
 	 */
 	public static RandomOperator expectedShortFallComplement(Double percentageLevel) {
@@ -58,7 +58,7 @@ public class RandomOperators {
 	/**
 	 * X &mapsto; ES_\alpha(X)
 	 *
-	 * @param percentageLevel the percentage \alpha level of the expected short fall.
+	 * @param percentageLevel the percentage \alpha level of the expected shortfall.
 	 * @return The operator X &mapsto; ES_\alpha(X)
 	 */
 	public static RandomOperator rightTailExpectedShortFall(Double percentageLevel) {
@@ -68,7 +68,7 @@ public class RandomOperators {
 	/**
 	 * X &mapsto; ES_\alpha(X)
 	 *
-	 * @param percentageLevel the percentage \alpha level of the expected short fall.
+	 * @param percentageLevel the percentage \alpha level of the expected shortfall.
 	 * @return The operator X &mapsto; ES_\alpha(X)
 	 */
 	public static RandomOperator leftTailExpectedShortFall(Double percentageLevel) {
@@ -102,7 +102,7 @@ public class RandomOperators {
 	/**
 	 * ES_\alpha(X)
 	 *
-	 * @param percentageLevel the percentage \alpha level of the expected short fall.
+	 * @param percentageLevel the percentage \alpha level of the expected shortfall.
 	 * @return ES_\alpha(X)
 	 */
 	public static RandomVariable rightTailExpectedShortFall(RandomVariable x, Double percentageLevel) {
@@ -121,7 +121,7 @@ public class RandomOperators {
 	/**
 	 * ES_\alpha(X) for a value RandomVariable where lower values are worse outcomes, i.e. we have to invert the percentage level and average all values below the percentile
 	 *
-	 * @param percentageLevel the percentage \alpha level of the expected short fall.
+	 * @param percentageLevel the percentage \alpha level of the expected shortfall.
 	 * @return ES_\alpha(X)
 	 */
 	public static RandomVariable leftTailExpectedShortFall(RandomVariable x, Double percentageLevel) {

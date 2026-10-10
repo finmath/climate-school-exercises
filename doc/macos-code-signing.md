@@ -97,7 +97,7 @@ Actions → New repository secret**. Create these five secrets:
 The workflow creates a random temporary keychain on the GitHub-hosted macOS
 runner and deletes the imported signing material after the build. A normal
 local `mvn package` remains unsigned. The macOS GitHub Actions build activates
-the `mac-sign` Maven profile for manual tests and tagged releases.
+the `mac-sign` Maven profile for manual runs and tagged releases.
 
 The signed DMG is an Apple Silicon (`arm64`) package. During that build, the
 profile removes three obsolete Intel-only `.jnilib` entries embedded in the

@@ -1,16 +1,16 @@
 # Climate School Exercises
 
 
-** Note: The material in this repository will be updated during the next days. Please check back.**
+**Note: The material in this repository will be updated over the next few days. Please check back.**
 
 ------
 
 
 ## About this Repository
 
-This repository contains some elementary experiments related to the DICE model, stochastic interest rates models and combinations thereof.
+This repository contains some elementary experiments related to the DICE model, stochastic interest-rate models, and combinations thereof.
 
-The experiments are associated with a session at the *Munich Climate School* on *Climate Models and Interest Rate Risk*. **Note:** The repository may get some updates/improvements after the climate school.
+The experiments are associated with a session at the *Munich Climate School* on *Climate Models and Interest Rate Risk*. **Note:** The repository may receive updates and improvements after the climate school.
 
 The session will first discuss the theory and intuition behind integrated assessment models (IAMs)—the coupling of a physical climate model with an economic model. We will then combine the IAM with (stochastic) interest-rate models to analyze the effect of discounting.
 
@@ -29,17 +29,17 @@ If you’d like to run the code during the session, see optional setup below.
 
 ## Presentation
 
-Download the [presentation slides (PDF)](https://github.com/finmath/climate-school-exercises/raw/refs/heads/main/presentation/Presentation%202026%20Climate%20School%20-%20DICE%20-%20Intergenerational%20Equity%20DICE%20Nonlinear%20Disocunting%20-%20Fries.pdf).
+Download the [presentation slides (PDF)](https://github.com/finmath/climate-school-exercises/raw/refs/heads/main/presentation/Presentation%202026%20Climate%20School%20-%20DICE%20-%20Intergenerational%20Equity%20DICE%20Nonlinear%20Discounting%20-%20Fries.pdf).
 
 ------
 
-## Numerical Experiments through Graphical User Interface
+## Numerical Experiments via a Graphical User Interface
 
 We provide a binary version of the experiments for
 
-- Windows (file ending .msi)
-- MacOS (file ending .dmg)
-- Linux (file ending .deb)
+- Windows (file ending `.msi`)
+- macOS (file ending `.dmg`)
+- Linux (file ending `.deb`)
 
 on the [Climate School Exercises Releases Page](https://github.com/finmath/climate-school-exercises/releases/latest).
 
@@ -47,15 +47,15 @@ on the [Climate School Exercises Releases Page](https://github.com/finmath/clima
 
 ### Installation and Running on Windows
 
-- Download the .msi installer from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
-- Run the installer (double click on the downloaded .msi file).
+- Download the `.msi` installer from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
+- Run the installer (double-click the downloaded `.msi` file).
 - You will be asked twice to confirm the installation, because the file is not signed.
-- You now find the programm in `C:\Program Files\Climate School Exercises`. Open this folder an double click `Climate School Exercises.exe`.
+- You can now find the program in `C:\Program Files\Climate School Exercises`. Open this folder and double-click `Climate School Exercises.exe`.
 
 ### Installation and Running on macOS
 
 - Download the `.dmg` file from [github.com/finmath/climate-school-exercises](https://github.com/finmath/climate-school-exercises/releases/latest).
-- Open the downloaded .dmg file (double click on the downloaded .dmg file).
+- Open the downloaded `.dmg` file (double-click the file).
 - Move `Climate School Exercises` to the Applications folder and open it.
 - Confirm the standard first-launch prompt for an application downloaded from the Internet.
 
@@ -76,53 +76,49 @@ Tagged releases use Developer ID signing and Apple notarization. The one-time Ap
 
 ## Numerical Experiments - Running and Modifying Code
 
-You can also run the raw code of the exeriments.
+You can also run the raw code of the experiments.
 
 There are currently seven different numerical experiments in the Java package `net.finmath.climateschool.experiments`.
 
-Feel free play with them. Alter parameters and check results.
+Feel free to play with them. Alter parameters and check the results.
 
-Note: We use models from *finmath lib*. This code is open source and available at https://github.com/finmath/finmath-lib
+Note: We use models from *finmath-lib*. This code is open source and available at [github.com/finmath/finmath-lib](https://github.com/finmath/finmath-lib).
 
-### Importing in Eclipse from GitHub
+### Importing into Eclipse from GitHub
 
-Import this git repository into Eclipse and start working.
+Import this Git repository into Eclipse and start working.
 
-- Got to this repository on GitHub
+- Go to this repository on GitHub.
 - Click on “Clone or download” and copy the URL to your clipboard.
 - Go to Eclipse and select File → Import → Git → Projects from Git **(with smart import)**.
 - Select “Clone URI” and paste the GitHub URL from step 2.
 - Select "main", then Next → Next → Finish.
 
-Note: If you choose "Projects from Git" without the option "(with smart import)" you may expirience that
-the project is not imported into Eclipse, but it was successfully checked out via git, i.e. you
-find the project files in you local git folder. In that case, you can import the project "as maven project"
-(see below).
+Note: If you choose “Projects from Git” without the option “(with smart import),” the project may be checked out via Git without being imported into Eclipse. In that case, you can find the project files in your local Git folder and import the project as a Maven project (see below).
 
-### Importing in Eclipse (as Maven Project) (Alternatively)
+### Alternatively: Importing into Eclipse as a Maven Project
 
-If you checked out the git repository manually (`git clone`), then import
-the local git folder as Maven Project;
+If you checked out the Git repository manually (`git clone`), import the local Git folder as a Maven project:
 
 - File → Import → Maven → Existing Maven Projects
-- Select the project folder in you *local* git folder.
+- Select the project folder in your *local* Git folder.
 
-ä## Testing your Setup
+## Testing Your Setup
 
-To test your setup, run the Java Class `Test.java` in the package `net.finmath.climateschool.begin`. To do so: In the Eclipse Project Explorer:
+To test your setup, run the Java class `Test.java` in the package `net.finmath.climateschool.begin`. To do so, in the Eclipse Project Explorer:
 
-- Expand `src/main/java'
-- Expand `net.finmath.climateschool.begin`
-- Right-click on the class `Test.java`,
-- then select “Run As → Java Application".
-  
+- Expand `src/main/java`.
+- Expand `net.finmath.climateschool.begin`.
+- Right-click the class `Test.java`.
+- Select “Run As → Java Application.”
+
 ### Update the Project (later)
 
-To get an update of this project at a later time
+To update this project at a later time:
 
-- Right click on the project,
-- then select “Team → Pull".
- 
- This will *pull* updates committed to the project.
- 
+- Right-click the project.
+- Select “Team → Pull.”
+
+This will *pull* updates committed to the project.
+
 Note: If you modified files in the project, you may see "merge conflicts". At the current stage it is recommended that you do not modify existing files. You may add new ones.

@@ -35,7 +35,7 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 	}
 
 
-	public String getTitle() { return "DICE Model - One Parametric Abatement Model - NOT CALIBRATED"; }
+	public String getTitle() { return "DICE Model - One-Parameter Abatement Model - NOT CALIBRATED"; }
 
 	public void runCalculation(BooleanSupplier isCancelled, DoubleConsumer progress) {
 		Map<String, Object> currentParameterSet = getExperimentParameters().stream().collect(Collectors.toMap(p -> p.getBindableValue().getName(), p -> p.getBindableValue().getValue()));
@@ -61,7 +61,7 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 		final TimeDiscretization timeDiscretization = new TimeDiscretizationFromArray(0.0, numberOfTimeSteps, timeStep);
 
 		/*
-		 * Create our abatement model: it is a piecewise linear funtion: starting in abatementInitial, then reaching abatementMax in abatementMaxTime years, then staying at abatementMax.
+		 * Create our abatement model: it is a piecewise-linear function, starting at abatementInitial, reaching abatementMax after abatementMaxTime years, and then staying at abatementMax.
 		 */
 		final UnaryOperator<Double> abatementFunction = time -> Math.min(abatementInitial + (abatementMax-abatementInitial)/abatementMaxTime * time, abatementMax);
 
@@ -81,7 +81,7 @@ public class DICEAbatementTimeExperimentUI extends ExperimentUI {
 
 		if(!Thread.currentThread().isInterrupted() && !isCancelled.getAsBoolean()) {
 			synchronized(this) {
-			String spec = "T(\u03BC=1) =" + numberDigit3.format(abatementMaxTime) + ", r = " + numberPercent2.format(discountRate);		
+			String spec = "T(\u03BC=1) = " + numberDigit3.format(abatementMaxTime) + ", r = " + numberPercent2.format(discountRate);
 
 			plots.plot(climateModel, spec);
 

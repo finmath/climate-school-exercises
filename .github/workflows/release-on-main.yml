@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-     - 'v*'                         # For tags with format v1.2.3 nutzt
+     - 'v*'                         # For tags in v1.2.3 format
      - 'climate-school-exercises-*' # Maven Release Plugin Default: <artifactId>-<version>
 
 permissions:

@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
   push:
     tags:
-     - 'v*'                         # For tags with format v1.2.3 nutzt
+     - 'v*'                         # For tags in v1.2.3 format
      - 'climate-school-exercises-*' # Maven Release Plugin Default: <artifactId>-<version>
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release-${{ github.ref }}
@@ -46,17 +46,6 @@ jobs:
       - name: Install WiX (Windows)
         if: runner.os == 'Windows'
         run: choco install wixtoolset -y
-
-      - name: Determine package version
-        shell: bash
-        run: |
-          set -euo pipefail
-          project_version="$(mvn -B -ntp help:evaluate \
-            -Dexpression=project.version \
-            -DforceStdout \
-            -q)"
-          package_version="${project_version%-SNAPSHOT}"
-          echo "JPACKAGE_APP_VERSION=$package_version" >> "$GITHUB_ENV"
 
       - name: Import Developer ID Application certificate (macOS)
         if: runner.os == 'macOS'
@@ -105,19 +94,17 @@ jobs:
           echo "MACOS_SIGNING_USER=$signing_user" >> "$GITHUB_ENV"
           echo "MACOS_SIGNING_KEYCHAIN=$keychain_path" >> "$GITHUB_ENV"
 
-      - name: Build signed DMG with Maven (skip tests)
+      - name: Test and build signed DMG with Maven
         if: runner.os == 'macOS'
         run: >-
-          mvn -B -DskipTests
-          -Djpackage.app.version="$JPACKAGE_APP_VERSION"
+          mvn -B
           -Pmac-sign package
 
-      - name: Build unsigned package with Maven (skip tests)
+      - name: Test and build unsigned package with Maven
         if: runner.os != 'macOS'
         shell: bash
         run: >-
-          mvn -B -DskipTests
-          -Djpackage.app.version="$JPACKAGE_APP_VERSION"
+          mvn -B
           package
 
       - name: Sign, notarize, and staple DMG (macOS)
@@ -180,6 +167,8 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: write
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4

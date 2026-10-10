@@ -121,7 +121,7 @@ public abstract class ExperimentUI extends Application {
 	// For standalone start (fallback)
 	@Override
 	public void start(Stage stage) {
-		System.out.println("ExperimentUI statring.");
+		System.out.println("ExperimentUI starting.");
 
 		stage.setTitle("finmath Experiment (Window)");
 		stage.setScene(new Scene(getContent()));
@@ -150,7 +150,7 @@ public abstract class ExperimentUI extends Application {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(16));
 
-		// Headder
+		// Header
 		addHeader(grid);
 
 		// Parameters
@@ -162,8 +162,8 @@ public abstract class ExperimentUI extends Application {
 		debounce.setOnFinished(e -> runCalculationAsync());
 
 		// Buttons
-		Button buttonRest = new Button("Reset");
-		buttonRest.setOnAction(e -> resetToDefaults());
+		Button buttonReset = new Button("Reset");
+		buttonReset.setOnAction(e -> resetToDefaults());
 		Button buttonCalculate = new Button("Calculate");
 		buttonCalculate.setOnAction(e -> runCalculationAsync());
 
@@ -173,7 +173,7 @@ public abstract class ExperimentUI extends Application {
 		
 		// Controls
 		HBox controls = new HBox(10);
-		controls.getChildren().addAll(buttonRest, buttonCalculate, progressIndicator);
+		controls.getChildren().addAll(buttonReset, buttonCalculate, progressIndicator);
 		controls.setAlignment(Pos.CENTER_LEFT);
 		
 		VBox vbox = new VBox(12, grid, controls);
@@ -196,15 +196,15 @@ public abstract class ExperimentUI extends Application {
 	private void addHeader(GridPane grid) {
 		Label hName			= new Label("Parameter");
 		Label hValue		= new Label("Value");
-		Label hConstrain	= new Label("Constrain");
+		Label hConstraint	= new Label("Constraint");
 
 		hName.getStyleClass().add("header");
 		hValue.getStyleClass().add("header");
-		hConstrain.getStyleClass().add("header");
+		hConstraint.getStyleClass().add("header");
 
 		grid.add(hName,      0, 0);
 		grid.add(hValue,     1, 0);
-		grid.add(hConstrain, 2, 0);
+		grid.add(hConstraint, 2, 0);
 
 		ColumnConstraints c0 = new ColumnConstraints();
 		c0.setPercentWidth(25);
@@ -244,8 +244,8 @@ public abstract class ExperimentUI extends Application {
 			HBox sliderBox = new HBox(8, slider, valueField);
 			sliderBox.setAlignment(Pos.CENTER_LEFT);
 
-			// constrain Labels
-			Label constrainLabel = new Label("∊ (" + df.format(lo) + "," + df.format(hi)+ ")");
+			// Constraint label
+			Label constraintLabel = new Label("∊ (" + df.format(lo) + "," + df.format(hi)+ ")");
 
 			// Bidirektionales Binding (mit robuster Konvertierung)
 			StringConverter<Number> conv = new NumberStringConverter(df);
@@ -269,7 +269,7 @@ public abstract class ExperimentUI extends Application {
 
 			grid.add(name,      0, row);
 			grid.add(sliderBox, 1, row);
-			grid.add(constrainLabel,  2, row);
+			grid.add(constraintLabel,  2, row);
 		}
 		else if(parameter instanceof BooleanParameter p) {
 			SimpleBooleanProperty value = p.getBindableValue();
@@ -299,16 +299,23 @@ public abstract class ExperimentUI extends Application {
 		return row + 1;
 	}
 
-	/** Setzt alle Werte auf die ursprünglich übergebenen Startwerte (geklammert auf min/max). */
+	/** Resets all parameters to their initial values (clamped to the configured range). */
 	private void resetToDefaults() {
 		for (Parameter parameter : parameters) {
-			if(parameter instanceof DoubleParameter p) {
-				double lo = Math.min(p.getSpec().min(), p.getSpec().max());
-				double hi = Math.max(p.getSpec().min(), p.getSpec().max());
-				double value = clamp(p.getSpec().initial(), lo, hi);
-				p.getBindableValue().set(value);
-			}
-			debounce.playFromStart();
+			resetParameter(parameter);
+		}
+		debounce.playFromStart();
+	}
+
+	static void resetParameter(Parameter parameter) {
+		if(parameter instanceof DoubleParameter p) {
+			double lo = Math.min(p.getSpec().min(), p.getSpec().max());
+			double hi = Math.max(p.getSpec().min(), p.getSpec().max());
+			double value = clamp(p.getSpec().initial(), lo, hi);
+			p.getBindableValue().set(value);
+		}
+		else if(parameter instanceof BooleanParameter p) {
+			p.getBindableValue().set(p.getSpec().initial());
 		}
 	}
 

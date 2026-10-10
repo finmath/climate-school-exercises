@@ -21,7 +21,7 @@ import net.finmath.time.TimeDiscretizationFromArray;
  */
 public class DICEModelSocialCostOfCarbon {
 
-	// Contants (fixed model parameters)
+	// Constants (fixed model parameters)
 	private static final double timeStep = 1.0;
 	private static final double timeHorizon = 500.0;
 
@@ -47,7 +47,7 @@ public class DICEModelSocialCostOfCarbon {
 
 		Plots
 		.createScatter(discountRates, socialCostOfCarbons, 0, 300, 3)
-		.setTitle("Social Cost of Carbon (T(\u03BC=1) =" + abatementMaxTime + ")")
+		.setTitle("Social Cost of Carbon (T(\u03BC=1) = " + abatementMaxTime + ")")
 		.setXAxisLabel("rate (r)").setXAxisNumberFormat(new DecimalFormat("0.0%")).setYAxisLabel("SCC").show();
 
 		System.out.println("_".repeat(79));

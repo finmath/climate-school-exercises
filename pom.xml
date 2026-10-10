@@ -14,7 +14,7 @@
 		<src.test.java.dir>src/test/java</src.test.java.dir>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
-		<jpackage.app.version>${project.version}</jpackage.app.version>
+		<jpackage.input.directory>${project.build.directory}/jpackage-input</jpackage.input.directory>
 
 		<junit.version>5.6.2</junit.version>
 		<finmath-lib.version>6.0.22</finmath-lib.version>
@@ -22,7 +22,7 @@
 
 		<!-- JavaFX -->
 		<javafx.version>21.0.5</javafx.version>
-		<!-- Fallback - overwrite by profile -->
+		<!-- Fallback—overridden by an OS profile -->
 		<javafx.platform>mac-aarch64</javafx.platform>
 
 		<!-- maven plugins -->
@@ -139,6 +139,29 @@
 
 	<build>
 		<plugins>
+			<!-- jpackage accepts only one to three numeric version components. -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.6.1</version>
+				<executions>
+					<execution>
+						<id>derive-jpackage-version</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>regex-property</goal>
+						</goals>
+						<configuration>
+							<name>jpackage.app.version</name>
+							<value>${project.version}</value>
+							<regex>^([0-9]+(?:\.[0-9]+){0,2}).*$</regex>
+							<replacement>$1</replacement>
+							<failIfNoMatch>true</failIfNoMatch>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -172,10 +195,13 @@
 
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
+				<version>3.5.4</version>
+				<configuration>
+					<failIfNoTests>true</failIfNoTests>
+				</configuration>
 			</plugin>
 
-			<!-- Dependencies for jpackage in target/ -->
+			<!-- Runtime dependencies for the isolated jpackage input directory. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -189,7 +215,42 @@
 						</goals>
 						<configuration>
 							<includeScope>runtime</includeScope>
-							<outputDirectory>${project.build.directory}</outputDirectory>
+							<outputDirectory>${jpackage.input.directory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Recreate the staging directory and add the application JAR after it is built. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>prepare-jpackage-input</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<delete dir="${jpackage.input.directory}" quiet="true" />
+								<mkdir dir="${jpackage.input.directory}" />
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stage-application-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<copy file="${project.build.directory}/${project.build.finalName}.jar"
+										todir="${jpackage.input.directory}" />
+							</target>
 						</configuration>
 					</execution>
 				</executions>
@@ -200,11 +261,11 @@
 				<groupId>org.panteleyev</groupId>
 				<artifactId>jpackage-maven-plugin</artifactId>
 				<version>1.7.1</version>
-				<!-- top level config (if called via mvn jpackage:jpackage -->
+				<!-- Shared configuration for the lifecycle execution and OS profiles. -->
 				<configuration>
 					<name>${project.name}</name>
 					<appVersion>${jpackage.app.version}</appVersion>
-					<input>${project.build.directory}</input>
+					<input>${jpackage.input.directory}</input>
 					<mainJar>${project.build.finalName}.jar</mainJar>
 					<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
 					<runtimeImage>${java.home}</runtimeImage>
@@ -219,17 +280,6 @@
 						<goals>
 							<goal>jpackage</goal>
 						</goals>
-						<configuration>
-							<name>${project.name}</name>
-							<appVersion>${jpackage.app.version}</appVersion>
-							<input>${project.build.directory}</input>
-							<mainJar>${project.build.finalName}.jar</mainJar>
-							<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
-							<runtimeImage>${java.home}</runtimeImage>
-							<destination>${project.build.directory}/dist</destination>
-							<removeDestination>true</removeDestination>
-							<type>${pack.type}</type>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -292,7 +342,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
-						<version>3.1.0</version>
 						<executions>
 							<execution>
 								<id>prepare-macos-dependencies-for-notarization</id>
@@ -304,7 +353,7 @@
 									<target>
 										<exec executable="/bin/bash" failonerror="true">
 											<arg value="${project.basedir}/scripts/prepare-macos-dependencies.sh" />
-											<arg value="${project.build.directory}" />
+											<arg value="${jpackage.input.directory}" />
 										</exec>
 									</target>
 								</configuration>

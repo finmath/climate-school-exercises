@@ -40,12 +40,14 @@ public class ModelFactory {
 	 * final double shortRateVolatility = 0.005;	// Investigating LIBOR in Arrears, use a high volatility here (e.g. 0.1)
 	 * final double shortRateMeanreversion = 0.1;
 	 *
-	 * @param zeroRateShortTerm
-	 * @param zeroRateLongTerm
-	 * @param shortRateVolatility
-	 * @param shortRateMeanreversion
-	 * @param numberOfPaths
-	 * @return
+	 * @param simulationTimeDiscretization The simulation time discretization.
+	 * @param liborPeriodDiscretization The LIBOR period discretization.
+	 * @param zeroRateMaturities The zero-rate maturities.
+	 * @param zeroRateRates The zero rates.
+	 * @param shortRateVolatility The short-rate volatility.
+	 * @param shortRateMeanreversion The short-rate mean reversion.
+	 * @param brownianMotion The Brownian motion driving the model.
+	 * @return The term-structure Monte Carlo simulation model.
 	 */
 	public static TermStructureMonteCarloSimulationModel getInterestRateModel(
 			TimeDiscretization simulationTimeDiscretization,
@@ -58,7 +60,7 @@ public class ModelFactory {
 		 */
 		final LocalDate referenceDate = LocalDate.of(2017, 6, 15);
 
-		// Create the forward curve (initial value of the LIBOR market model)
+		// Create the discount curve (initial value of the LIBOR market model)
 		final DiscountCurve discountCurve = DiscountCurveInterpolation.createDiscountCurveFromZeroRates(
 				"discount curve",
 				referenceDate,
@@ -71,7 +73,7 @@ public class ModelFactory {
 
 		AnalyticModel curveModel = new AnalyticModelFromCurvesAndVols(new Curve[] { discountCurve });
 
-		// Create the discount curve
+		// Create the forward curve
 		final ForwardCurve forwardCurve2 = new ForwardCurveFromDiscountCurve(discountCurve.getName(), referenceDate, "6M");
 
 		curveModel = new AnalyticModelFromCurvesAndVols(new Curve[] { discountCurve, forwardCurve2 });
@@ -102,12 +104,14 @@ public class ModelFactory {
 	 * final double shortRateVolatility = 0.005;	// Investigating LIBOR in Arrears, use a high volatility here (e.g. 0.1)
 	 * final double shortRateMeanreversion = 0.1;
 	 *
-	 * @param zeroRateShortTerm
-	 * @param zeroRateLongTerm
-	 * @param shortRateVolatility
-	 * @param shortRateMeanreversion
-	 * @param numberOfPaths
-	 * @return
+	 * @param simulationTimeDiscretization The simulation time discretization.
+	 * @param liborPeriodDiscretization The LIBOR period discretization.
+	 * @param zeroRateMaturities The zero-rate maturities.
+	 * @param zeroRateRates The zero rates.
+	 * @param shortRateVolatility The short-rate volatility.
+	 * @param shortRateMeanreversion The short-rate mean reversion.
+	 * @param numberOfPaths The number of simulation paths.
+	 * @return The term-structure Monte Carlo simulation model.
 	 */
 	public static TermStructureMonteCarloSimulationModel getInterestRateModel(
 			TimeDiscretization simulationTimeDiscretization,
@@ -118,4 +122,3 @@ public class ModelFactory {
 		return getInterestRateModel(simulationTimeDiscretization, liborPeriodDiscretization, zeroRateMaturities, zeroRateRates, shortRateVolatility, shortRateMeanreversion, new BrownianMotionFromMersenneRandomNumbers(simulationTimeDiscretization, 2 /* numberOfFactors */, numberOfPaths, 3141 /* seed */));
 	}
 }
-

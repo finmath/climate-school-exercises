@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.IntToDoubleFunction;
 import java.util.stream.IntStream;
 
 import net.finmath.climate.models.CarbonConcentration;
@@ -23,6 +24,28 @@ import net.finmath.stochastic.Scalar;
 import net.finmath.time.TimeDiscretization;
 
 public class DICEModelPlots {
+
+	private static final int COST_AVERAGING_WINDOW = 100;
+
+	static record RollingCostStatistics(double averageDiscountedCost, double discountedCostPerGDP) {}
+
+	static RollingCostStatistics calculateRollingCostStatistics(
+			int fromIndex,
+			int toIndex,
+			IntToDoubleFunction discountedCost,
+			IntToDoubleFunction discountedGDP) {
+		if(fromIndex < 0 || toIndex <= fromIndex) {
+			throw new IllegalArgumentException("The rolling window must contain at least one observation.");
+		}
+
+		final double discountedCostSum = IntStream.range(fromIndex, toIndex).mapToDouble(discountedCost).sum();
+		final double discountedGDPSum = IntStream.range(fromIndex, toIndex).mapToDouble(discountedGDP).sum();
+		final int numberOfObservations = toIndex - fromIndex;
+
+		return new RollingCostStatistics(
+				discountedCostSum / numberOfObservations,
+				discountedCostSum / discountedGDPSum);
+	}
 
 	Plot2D plotTemperature = null;
 	Plot2D plotCarbon = null;
@@ -147,8 +170,14 @@ public class DICEModelPlots {
 			costTotalDiscounted.add(new Point2D(timeDiscretization.getTime(i),damageCosts[i].add(abatementCosts[i]).div(numeraire).getAverage()));
 			costTotalPerGDP.add(new Point2D(timeDiscretization.getTime(i),damageCosts[i].add(abatementCosts[i]).div(gdp[i]).getAverage()));
 
-			costAveragedDiscounted.add(new Point2D(timeDiscretization.getTime(i),IntStream.range(i, Math.min(i+100, damageCosts.length-1)).mapToDouble(j -> damageCosts[j].add(abatementCosts[j]).div(climateModel.getNumeraire(timeDiscretization.getTime(j))).div(100.0).getAverage()).sum()));
-			costAveragedPerGDP.add(new Point2D(timeDiscretization.getTime(i),IntStream.range(i, Math.min(i+100, damageCosts.length-1)).mapToDouble(j -> damageCosts[j].add(abatementCosts[j]).div(climateModel.getNumeraire(timeDiscretization.getTime(j))).getAverage()).sum() / IntStream.range(i, Math.min(i+100, damageCosts.length)).mapToDouble(j -> gdp[j].div(climateModel.getNumeraire(timeDiscretization.getTime(j))).getAverage()).sum()));
+			final int rollingWindowEnd = Math.min(i + COST_AVERAGING_WINDOW, damageCosts.length - 1);
+			final RollingCostStatistics rollingCostStatistics = calculateRollingCostStatistics(
+					i,
+					rollingWindowEnd,
+					j -> damageCosts[j].add(abatementCosts[j]).div(climateModel.getNumeraire(timeDiscretization.getTime(j))).getAverage(),
+					j -> gdp[j].div(climateModel.getNumeraire(timeDiscretization.getTime(j))).getAverage());
+			costAveragedDiscounted.add(new Point2D(timeDiscretization.getTime(i), rollingCostStatistics.averageDiscountedCost()));
+			costAveragedPerGDP.add(new Point2D(timeDiscretization.getTime(i), rollingCostStatistics.discountedCostPerGDP()));
 		}
 
 		if(plotCostDiscounted == null) {

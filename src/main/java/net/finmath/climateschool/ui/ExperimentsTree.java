@@ -33,7 +33,7 @@ public class ExperimentsTree extends Application {
 
 	/**
 	 * Encapsulates construction of UI Experiments and specifies if
-	 * the experiment is lightwight enough (memory wise) to be cashed.
+	 * the experiment is lightweight enough (memory-wise) to be cached.
 	 */
 	class ExperimentApplication {
 
@@ -134,14 +134,14 @@ public class ExperimentsTree extends Application {
 			"Info", (Supplier<Parent>) () -> getInfo(),
 //			"DICE Model (Climate School)", mapOf(
 //					//,
-//					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
+//					//					"One-Parameter Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
 //					),
 			"DICE Model (Climate School)", mapOf(
-					"One Parametric Abatement Model", new ExperimentApplication(() -> new DICEAbatementTimeExperimentUI(), 1),
-					"One Parametric Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationOneParameterExperimentUI(), 1),
+					"One-Parameter Abatement Model", new ExperimentApplication(() -> new DICEAbatementTimeExperimentUI(), 1),
+					"One-Parameter Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationOneParameterExperimentUI(), 1),
 					"Full Abatement Model, Calibrated", new ExperimentApplication(() -> new DICECalibrationExperimentUI(), 1)
 					//,
-					//					"One Parametric Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
+					//					"One-Parameter Abatement Model (new Window)", DICEAbatementTimeExperimentUI.class
 					),
 			"Interest Rates", mapOf(
 					"Simulation of Hull White Paths", new ExperimentApplication(() -> new InterestRatesHullWhiteSimulationPathOfShortRate(), 1),
@@ -153,7 +153,7 @@ public class ExperimentsTree extends Application {
 		VBox box = new VBox(
 				new Label("Collection of Parameter Experiments based on Models from finmath lib"),
 				new Label("Version 2025-10-12"),
-				new Label("Select a topic on the left; set the parameters or select calculate.")
+				new Label("Select a topic on the left; set the parameters or click Calculate.")
 				);
 		box.setAlignment(Pos.CENTER);
 		box.setPadding(new Insets(12));
@@ -207,6 +207,7 @@ public class ExperimentsTree extends Application {
 				tree.getSelectionModel().select(defaultItem);
 				tree.getFocusModel().focus(tree.getRow(defaultItem));
 				tree.scrollTo(tree.getRow(defaultItem));
+				runIfLeaf(defaultItem, stage);
 			}
 		});		
 
@@ -302,7 +303,7 @@ public class ExperimentsTree extends Application {
 		StackPane.setMargin(content, new javafx.geometry.Insets(8));
 	}
 
-	// Searches zero-arg static method that creates returns a Parent (z.B. createContent())
+	// Searches for a zero-argument static method that creates and returns a Parent (e.g. createContent()).
 	private Parent tryStaticContent(Class<?> cls) {
 		for (String name : new String[]{"createContent", "content", "buildUI"}) {
 			try {

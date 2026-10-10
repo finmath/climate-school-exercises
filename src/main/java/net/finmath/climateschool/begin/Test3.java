@@ -36,7 +36,7 @@ public class Test3 {
 		for(int i = 0; i<numberOfSamples; i++) {
 			double uniform = randomNumberGenerator.nextDouble();
 
-			double standardNormal = NormalDistribution.inverseCumulativeDistribution(uniform);;
+			double standardNormal = NormalDistribution.inverseCumulativeDistribution(uniform);
 
 			double normal = standardDeviation * standardNormal + mean;
 

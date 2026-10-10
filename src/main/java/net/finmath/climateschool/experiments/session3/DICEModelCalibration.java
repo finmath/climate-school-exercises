@@ -19,14 +19,14 @@ import net.finmath.time.TimeDiscretizationFromArray;
 /**
  * Experiment related to the DICE model.
  * 
- * Calibrates a full abatement pice-wise constant abatement function. With 500 time steps the model has 500 free parameters.
+ * Calibrates a full piecewise-constant abatement function. With 500 time steps, the model has 500 free parameters.
  * The abatement function will be plotted during the calibration, such that you can observe how the optimizer is approaching the optimal
  * abatement paths.
  * 
  * Observation: The optimizer first improves the "early years" and does not care about the far future. This is due to the
  * value function being less sensitive to the far future.
  * 
- * Suggestion: Change the discount rate and observe that with lower discount rate the calibration takes a larger focus on later years.
+ * Suggestion: Change the discount rate and observe that, with a lower discount rate, the calibration focuses more on later years.
  */
 public class DICEModelCalibration {
 
@@ -82,7 +82,7 @@ public class DICEModelCalibration {
 
 				final double value = climateModel.getValue().expectation().doubleValue();
 
-				// Penalty for non-smoothness - it works with out this, but this helps the optimizer to avoid onszillations (that are la
+				// Penalty for non-smoothness—it works without this, but it helps the optimizer avoid oscillations.
 				double roughness = 0.0;
 				for(int i=1; i<abatementParameter.length-2; i++) {
 					roughness += Math.pow(abatementParameter[i+1] - abatementParameter[i], 2.0);
@@ -126,19 +126,19 @@ public class DICEModelCalibration {
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getTemperature()).mapToDouble(Temperature::getExpectedTemperatureOfAtmosphere).toArray(), 0, 300, 3)
-		.setTitle("Temperature (T(\u03BC=1) =" + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]").show();
+		.setTitle("Temperature (r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Temperature [°C]").show();
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getCarbonConcentration()).mapToDouble(CarbonConcentration::getExpectedCarbonConcentrationInAtmosphere).toArray(), 0, 300, 3)
-		.setTitle("Carbon Concentration (T(\u03BC=1) =" + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]").show();
+		.setTitle("Carbon Concentration (r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Carbon concentration [GtC]").show();
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getEmission()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-		.setTitle("Emission (T(\u03BC=1) =" + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]").show();
+		.setTitle("Emission (r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Emission [GtCO2/yr]").show();
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getGDP()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)
-		.setTitle("Output (T(\u03BC=1) =" + ", r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel(" Output [Tr$2005]").show();
+		.setTitle("Output (r = " + discountRate + ")").setXAxisLabel("time (years)").setYAxisLabel("Output [Tr$2005]").show();
 
 		Plots
 		.createScatter(timeDiscretization.getAsDoubleArray(), Arrays.stream(climateModel.getAbatement()).mapToDouble(RandomVariable::getAverage).toArray(), 0, 300, 3)

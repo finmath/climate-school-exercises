@@ -86,7 +86,7 @@ public class ConvexityExperiments {
 	}
 
 	/**
-	 * Helper function that generates uniform distributed random numbers.
+	 * Helper function that generates uniformly distributed random numbers.
 	 * 
 	 * 
 	 * @param numberOfSamples

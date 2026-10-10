@@ -29,7 +29,7 @@ If you’d like to run the code during the session, see optional setup below.
 
 ## Presentation
 
-*Updated presentation slides will be available though this page soon*
+Download the [presentation slides (PDF)](https://github.com/finmath/climate-school-exercises/raw/refs/heads/main/presentation/Presentation%202026%20Climate%20School%20-%20DICE%20-%20Intergenerational%20Equity%20DICE%20Nonlinear%20Disocunting%20-%20Fries.pdf).
 
 ------
 

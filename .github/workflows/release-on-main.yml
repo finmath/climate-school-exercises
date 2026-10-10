@@ -94,17 +94,17 @@ jobs:
           echo "MACOS_SIGNING_USER=$signing_user" >> "$GITHUB_ENV"
           echo "MACOS_SIGNING_KEYCHAIN=$keychain_path" >> "$GITHUB_ENV"
 
-      - name: Build signed DMG with Maven (skip tests)
+      - name: Test and build signed DMG with Maven
         if: runner.os == 'macOS'
         run: >-
-          mvn -B -DskipTests
+          mvn -B
           -Pmac-sign package
 
-      - name: Build unsigned package with Maven (skip tests)
+      - name: Test and build unsigned package with Maven
         if: runner.os != 'macOS'
         shell: bash
         run: >-
-          mvn -B -DskipTests
+          mvn -B
           package
 
       - name: Sign, notarize, and staple DMG (macOS)

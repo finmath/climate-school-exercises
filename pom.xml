@@ -196,6 +196,9 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.4</version>
+				<configuration>
+					<failIfNoTests>true</failIfNoTests>
+				</configuration>
 			</plugin>
 
 			<!-- Runtime dependencies for the isolated jpackage input directory. -->

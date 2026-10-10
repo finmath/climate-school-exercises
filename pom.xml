@@ -258,7 +258,7 @@
 				<groupId>org.panteleyev</groupId>
 				<artifactId>jpackage-maven-plugin</artifactId>
 				<version>1.7.1</version>
-				<!-- Top-level config (if called via mvn jpackage:jpackage) -->
+				<!-- Shared configuration for the lifecycle execution and OS profiles. -->
 				<configuration>
 					<name>${project.name}</name>
 					<appVersion>${jpackage.app.version}</appVersion>
@@ -277,17 +277,6 @@
 						<goals>
 							<goal>jpackage</goal>
 						</goals>
-						<configuration>
-							<name>${project.name}</name>
-							<appVersion>${jpackage.app.version}</appVersion>
-							<input>${jpackage.input.directory}</input>
-							<mainJar>${project.build.finalName}.jar</mainJar>
-							<mainClass>net.finmath.climateschool.ui.StartUI</mainClass>
-							<runtimeImage>${java.home}</runtimeImage>
-							<destination>${project.build.directory}/dist</destination>
-							<removeDestination>true</removeDestination>
-							<type>${pack.type}</type>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>

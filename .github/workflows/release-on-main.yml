@@ -47,17 +47,6 @@ jobs:
         if: runner.os == 'Windows'
         run: choco install wixtoolset -y
 
-      - name: Determine package version
-        shell: bash
-        run: |
-          set -euo pipefail
-          project_version="$(mvn -B -ntp help:evaluate \
-            -Dexpression=project.version \
-            -DforceStdout \
-            -q)"
-          package_version="${project_version%-SNAPSHOT}"
-          echo "JPACKAGE_APP_VERSION=$package_version" >> "$GITHUB_ENV"
-
       - name: Import Developer ID Application certificate (macOS)
         if: runner.os == 'macOS'
         shell: bash
@@ -109,7 +98,6 @@ jobs:
         if: runner.os == 'macOS'
         run: >-
           mvn -B -DskipTests
-          -Djpackage.app.version="$JPACKAGE_APP_VERSION"
           -Pmac-sign package
 
       - name: Build unsigned package with Maven (skip tests)
@@ -117,7 +105,6 @@ jobs:
         shell: bash
         run: >-
           mvn -B -DskipTests
-          -Djpackage.app.version="$JPACKAGE_APP_VERSION"
           package
 
       - name: Sign, notarize, and staple DMG (macOS)

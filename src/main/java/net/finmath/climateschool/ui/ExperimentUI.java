@@ -308,6 +308,9 @@ public abstract class ExperimentUI extends Application {
 				double value = clamp(p.getSpec().initial(), lo, hi);
 				p.getBindableValue().set(value);
 			}
+			else if(parameter instanceof BooleanParameter p) {
+				p.getBindableValue().set(p.getSpec().initial());
+			}
 			debounce.playFromStart();
 		}
 	}

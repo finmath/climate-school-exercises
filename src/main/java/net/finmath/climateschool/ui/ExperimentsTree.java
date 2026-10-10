@@ -207,6 +207,7 @@ public class ExperimentsTree extends Application {
 				tree.getSelectionModel().select(defaultItem);
 				tree.getFocusModel().focus(tree.getRow(defaultItem));
 				tree.scrollTo(tree.getRow(defaultItem));
+				runIfLeaf(defaultItem, stage);
 			}
 		});		
 

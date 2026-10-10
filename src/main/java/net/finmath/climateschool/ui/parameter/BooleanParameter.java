@@ -14,7 +14,7 @@ public class BooleanParameter extends Parameter {
 		return (SimpleBooleanProperty)super.getBindableValue();
 	}
 
-	public ParameterSpec getSpec() {
-		return (ParameterSpec)super.getSpec();
+	public BooleanParameter.BooleanParameterSpec getSpec() {
+		return (BooleanParameter.BooleanParameterSpec)super.getSpec();
 	}
 }

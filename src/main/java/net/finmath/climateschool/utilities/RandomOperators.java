@@ -93,8 +93,9 @@ public class RandomOperators {
 	 * @return The VaR_\alpha(X)
 	 */
 	public static RandomVariable valueAtRisk(RandomVariable x, Double percentageLevel) {
+		final double level = validatePercentageLevel(percentageLevel);
 
-		final double valueAtRisk = x.getQuantile(percentageLevel);
+		final double valueAtRisk = x.getQuantile(level);
 		return Scalar.of(valueAtRisk);
 	}
 
@@ -106,14 +107,18 @@ public class RandomOperators {
 	 * @return ES_\alpha(X)
 	 */
 	public static RandomVariable rightTailExpectedShortFall(RandomVariable x, Double percentageLevel) {
+		final double level = validatePercentageLevel(percentageLevel);
 		if(x.isDeterministic() || x.getVariance() == 0) {
 			return x;
 		}
+		if(level == 1.0) {
+			return Scalar.of(x.getMax());
+		}
 
-		final double valueAtRisk = x.getQuantile(percentageLevel);
+		final double valueAtRisk = x.getQuantile(level);
 		// 1(x >= VaR)
 		final RandomVariable indicator = x.sub(valueAtRisk).choose(Scalar.of(1.0), Scalar.of(0.0));
-		final RandomVariable averageBiggerThanVar = x.mult(indicator).average().div(1-percentageLevel);
+		final RandomVariable averageBiggerThanVar = x.mult(indicator).average().div(1-level);
 
 		return averageBiggerThanVar;
 	}
@@ -125,18 +130,29 @@ public class RandomOperators {
 	 * @return ES_\alpha(X)
 	 */
 	public static RandomVariable leftTailExpectedShortFall(RandomVariable x, Double percentageLevel) {
+		final double level = validatePercentageLevel(percentageLevel);
 		if(x.isDeterministic() || x.getVariance() == 0) {
 			return x;
 		}
-		if(percentageLevel == 1) {
+		if(level == 0.0) {
+			return Scalar.of(x.getMin());
+		}
+		if(level == 1.0) {
 			return x.average(); // just return expectation
 		}
 
-		final double valueAtRisk = x.getQuantile(percentageLevel);
+		final double valueAtRisk = x.getQuantile(level);
 		// 1(x <= VaR)
-		final RandomVariable indicatorSmallerThanVar = x.sub(valueAtRisk).choose(Scalar.of(1.0), Scalar.of(0.0)).bus(1.0);
-		final RandomVariable averageSmallerThanVar = x.mult(indicatorSmallerThanVar).average().div(percentageLevel);
+		final RandomVariable indicatorSmallerThanVar = Scalar.of(valueAtRisk).sub(x).choose(Scalar.of(1.0), Scalar.of(0.0));
+		final RandomVariable averageSmallerThanVar = x.mult(indicatorSmallerThanVar).average().div(level);
 
 		return averageSmallerThanVar;
+	}
+
+	private static double validatePercentageLevel(Double percentageLevel) {
+		if(percentageLevel == null || !Double.isFinite(percentageLevel) || percentageLevel < 0.0 || percentageLevel > 1.0) {
+			throw new IllegalArgumentException("percentageLevel must be finite and in [0, 1].");
+		}
+		return percentageLevel;
 	}
 }

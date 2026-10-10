@@ -19,6 +19,11 @@ class RandomOperatorsTest {
 	}
 
 	@Test
+	void leftTailExpectedShortfallIncludesTheValueAtRiskObservation() {
+		assertEquals(-2.0, RandomOperators.leftTailExpectedShortFall(sample, 1.0 / 3.0).doubleValue(), 1E-12);
+	}
+
+	@Test
 	void tailRiskRejectsLevelsOutsideTheUnitInterval() {
 		assertThrows(IllegalArgumentException.class,
 				() -> RandomOperators.leftTailExpectedShortFall(sample, -0.01));

@@ -1,11 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.finmath</groupId>
 	<artifactId>climate-school-exercises</artifactId>
-	<version>1.0.13-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<name>Climate School Exercises</name>
 
 	<properties>
@@ -248,8 +246,7 @@
 						</goals>
 						<configuration>
 							<target>
-								<copy file="${project.build.directory}/${project.build.finalName}.jar"
-										todir="${jpackage.input.directory}" />
+								<copy file="${project.build.directory}/${project.build.finalName}.jar" todir="${jpackage.input.directory}" />
 							</target>
 						</configuration>
 					</execution>
@@ -448,7 +445,7 @@
 		<developerConnection>
 			scm:git:https://github.com/finmath/climate-school-exercises.git</developerConnection>
 		<url>https://github.com/finmath/climate-school-exercises</url>
-		<tag>HEAD</tag>
+		<tag>v1.1.0</tag>
 	</scm>
 
 	<repositories>
